@@ -1,0 +1,17 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-4">
+        <a href="#" class="thumbnail">
+            <img src="{{ good.image }}" class="img-rounded thumbnail" />
+        </a>
+    </div>
+    <div class="col-sm-5">
+        <h3>{{good.product}}{% if good.name %} &laquo;{{ good.name }}&raquo;{% endif %}</h3>
+        <br />
+        <p><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
+        <br />
+        <h4>{{ good.price }}&nbsp;<span class="rub">руб.</span></h4>
+        <br />
+        <h4><a href="/tag/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endfor %}{% endif %}</h4>
+    </div>
+{% endblock %}

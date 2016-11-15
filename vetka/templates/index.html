@@ -1,0 +1,9 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+        {% for good in goods %}
+        {% include 'good-view.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
