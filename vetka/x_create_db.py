@@ -12,15 +12,15 @@ def create_db():
     for c in cc:
         db.session.delete(c)
 
-    c_face = models.Category(name='Лицо', name_en='face', primary=True)
+    c_face = models.Category(name='Лицо', name_en='face', primary=True, deleted=False)
     db.session.add(c_face)
-    c_body = models.Category(name='Тело', name_en='body', primary=True)
+    c_body = models.Category(name='Тело', name_en='body', primary=True, deleted=False)
     db.session.add(c_body)
-    c_hair = models.Category(name='Волосы', name_en='hair', primary=True)
+    c_hair = models.Category(name='Волосы', name_en='hair', primary=True, deleted=False)
     db.session.add(c_hair)
-    c_nails = models.Category(name='Ногти', name_en='nails', primary=True)
+    c_nails = models.Category(name='Ногти', name_en='nails', primary=True, deleted=False)
     db.session.add(c_nails)
-    c_parfum = models.Category(name='Духи', name_en='parfum', primary=True)
+    c_parfum = models.Category(name='Духи', name_en='parfum', primary=True, deleted=False)
     db.session.add(c_parfum)
 
     t_massage = models.Category(name='массаж', name_en='massage')
