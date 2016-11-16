@@ -75,7 +75,9 @@ def home():
 
 @app.route('/good/<good_id>')
 def good(good_id):
-    gg = models.Good.query.filter_by(id=good_id).first()
+    gg = None
+    if good_id.isdigit():
+        gg = models.Good.query.filter_by(id=good_id).first()
     if gg is None:
         gg = models.Good.query.filter_by(name_en=good_id).first()
     if gg is None:
