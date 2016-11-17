@@ -280,3 +280,10 @@ hr {
     opacity: 1;
 }
 
+.dir {
+    margin-left: 2em;
+}
+
+.icon {
+    margin: 0px 4px 2px 0px;
+}
