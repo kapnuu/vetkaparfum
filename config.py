@@ -18,8 +18,6 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-    yandexToken = os.environ.get('YANDEX_TOKEN')
-
 
 class ProductionConfig(Config):
     DEBUG = False

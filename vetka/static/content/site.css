@@ -165,7 +165,7 @@ a.thumbnail {
     font-family: ZopaRegular, sans-serif;
 }
 
-.cloud { float:right; max-width:220px; margin:6px 6px 24px 6px; font-size:120%; text-align:center;}
+.cloud { max-width:220px; margin:6px 6px 24px 6px; font-size:120%; text-align:center; align-content: center;}
 .cloud a {text-decoration:none;}
 .cloud-size-0-0 a  {font-size: 1em;    color: #000;}
 .cloud-size-3--1 a {font-size: 0.75em; color: #666;}
@@ -186,6 +186,8 @@ a.thumbnail {
 
 #vk_groups {
     padding: 10px;
+    clear: right;
+    max-width: 260px;
 }
 
 .lead {
@@ -278,10 +280,6 @@ hr {
 .close.hover {
     color: #930e06;
     opacity: 1;
-}
-
-.dir {
-   /* margin-left: 2em;*/
 }
 
 .icon {

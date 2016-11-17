@@ -119,20 +119,21 @@
             <div class="row">
                 {% block content %}{% endblock %}
                 <div class="col-sm-3">
-                    {% if g.tags %}<div class="cloud">
-                        {%- for tag in g.tags[1] -%}
+                    {%- if g.tags %}
+                    <div class="cloud">
+                        {% for tag in g.tags[1] %}
                         <span class="cloud-size-{{g.tags[0]}}-{{tag[1]}}{% if tag[0].primary%} cloud-cat{% endif %}"><a href="/{% if tag[0].primary%}category{% else %}tag{% endif %}/{{tag[0].name_en}}">{{tag[0].name|lower}}</a></span>
                         {% endfor %}
-                    </div>{% endif %}
-
-                    {% if g.vk_group %}
+                    </div>
+                    {% endif -%}
+                    {%- if g.vk_group and request.path=="/" %}
                     <script type="text/javascript" src="//vk.com/js/api/openapi.js?136"></script>
                     <!-- VK Widget -->
-                    <div id="vk_groups" style="padding: 20px"></div>
+                    <div id="vk_groups"></div>
                     <script type="text/javascript">
                         VK.Widgets.Group("vk_groups", { mode: 0, width: "auto", height: "300" }, {{ g.vk_group }});
                     </script>
-                    {% endif %}
+                    {% endif -%}
                 </div>
             </div>
         </main>

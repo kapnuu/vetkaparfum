@@ -4,6 +4,7 @@
     <div class="col-sm-7">
         <h3>Товары в категории &laquo;{{ category.name|lower }}&raquo;</h3>
         {% for good in goods %}
+        {% set loop1 = loop %}
         {% include 'good-view.html' %}
         {% endfor %}
         <br />
