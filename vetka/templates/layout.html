@@ -140,19 +140,15 @@
         <footer>
             <div class="container">
                 <hr />
-                <div class="row">
-                    <div class="col-sm-1">{% if g.yandexCounter %}
+                <div class="row">{% if g.yandexCounter %}
 <!-- Yandex.Metrika informer -->
 <a href="https://metrika.yandex.ru/stat/?id={{ g.yandexCounter }}&amp;from=informer"
 target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/{{ g.yandexCounter }}/3_0_B32E26FF_930E06FF_1_pageviews"
-style="width:88px; height:31px; border:0; margin-right: 2em;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="{{ g.yandexCounter }}" data-lang="ru" /></a>
-<!-- /Yandex.Metrika informer -->{% else %}<img style="background-color: #930e06; width:88px; height:31px; border:0;" class="ym-advanced-informer" />{% endif %}
-                    </div>
-                    <div class="col-sm-11 dir">
+style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer  pull-left" data-cid="{{ g.yandexCounter }}" data-lang="ru" /></a>
+<!-- /Yandex.Metrika informer -->{% else %}<a href="#"><img style="background-color: #930e06; width:88px; height:31px; border:0; margin: 0 1em;" class="ym-advanced-informer pull-left" /></a>{% endif %}
                         <p>&copy; {{ year }} &mdash; kapnuu</p>
                         <p>Вся указанная информация носит ознакомительный характер и не является публичной офертой</p>
-                    </div>
-                </div>
+                 </div>
             </div>
         </footer>
     </div>
