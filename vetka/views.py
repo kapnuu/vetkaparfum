@@ -56,6 +56,7 @@ def before_request():
         g_tags = tagcloud.tagcloud(tag_list)
     g.tags = g_tags
     g.vk_group = environ.get('VK_GROUP')
+    g.yandexCounter = environ.get('YANDEX_COUNTER')
 
 
 @app.route('/')
