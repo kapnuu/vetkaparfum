@@ -285,3 +285,26 @@ hr {
 .icon {
     margin: 0px 4px 2px 0px;
 }
+
+.control-group {
+    margin: 1em;
+}
+
+.modal-sm {
+    width: 480px;
+}
+
+.login {
+    margin-bottom: -50px;
+}
+
+.login-field {
+    color: #930e06;
+    padding: 4px 6px;
+    border: 1px solid #930e06;
+    border-radius: 6px;
+}
+
+#login-logo {
+    margin: -2em 2em 1em 1em;
+}

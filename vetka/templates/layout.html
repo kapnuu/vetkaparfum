@@ -10,8 +10,7 @@
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    {% if good_page %}<div class="modal fade" id="image-modal" tabindex="-1" role="dialog">
-    {% if g.yandexCounter %}<!-- Yandex.Metrika counter -->
+{%- if g.yandexCounter %}<!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
@@ -38,7 +37,8 @@
     })(document, window, "yandex_metrika_callbacks");
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/{{ g.yandexCounter }}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->{% endif %}
+<!-- /Yandex.Metrika counter -->{% endif -%}
+    {% if good_page %}<div class="modal fade" id="image-modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -51,6 +51,46 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
           </div>
+        </div>
+      </div>
+    </div>{% endif %}
+    {% if request.path=='/' %}<div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <form action="/login" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <div class="modal-title">Вход</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login">
+                            <div class="login-screen">
+                                <div class="login-form">
+                                    <div class="pull-left">
+                                        <img src="/static/img/logo.png" alt="www.vetkaparfum.ru" title="Ветка" id="login-logo" />
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="text" class="login-field" value="" placeholder="username"
+                                               name="username">
+                                        <label class="login-field-icon fui-user" for="login-name"></label>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <input type="password" class="login-field" value="" placeholder="password"
+                                               name="password">
+                                        <label class="login-field-icon fui-lock" for="login-pass"></label>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Войти" class="btn btn-default btn-large">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    </div>
+            </form>
         </div>
       </div>
     </div>{% endif %}
@@ -142,12 +182,15 @@
         <footer>
             <div class="container">
                 <hr />
-                <div class="row">{% if g.yandexCounter %}
+                <div class="row">
+                {% if request.path=='/' %}<div class="pull-right" style="margin: 1em;"><a href="/login" id="login"><img src="/static/img/login.png" alt="Login" title="Login" /></a></div>{% endif %}
+{%- if g.yandexCounter %}
 <!-- Yandex.Metrika informer -->
 <a href="https://metrika.yandex.ru/stat/?id={{ g.yandexCounter }}&amp;from=informer"
 target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/{{ g.yandexCounter }}/3_0_B32E26FF_930E06FF_1_pageviews"
 style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer  pull-left" data-cid="{{ g.yandexCounter }}" data-lang="ru" /></a>
-<!-- /Yandex.Metrika informer -->{% else %}<a href="#"><img style="background-color: #930e06; width:88px; height:31px; border:0; margin: 0 1em;" class="ym-advanced-informer pull-left" /></a>{% endif %}
+<!-- /Yandex.Metrika informer -->{% else %}<a href="#"><img style="background-color: #930e06; width:88px; height:31px; border:0; margin: 0 1em;" class="ym-advanced-informer pull-left" /></a>
+{% endif -%}
                         <p>&copy; {{ year }} &mdash; kapnuu</p>
                         <p>Вся указанная информация носит ознакомительный характер и не является публичной офертой</p>
                  </div>
@@ -171,5 +214,14 @@ style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Ме
       });
     });
     </script>{% endif %}
+    {% if request.path=='/' %}<script>
+    $(function() {
+      $('#login').click(function(e) {
+        e.preventDefault();
+        $("#login-modal").modal('show');
+      });
+    });
+    </script>
+    {% endif %}
 </body>
 </html>
