@@ -256,27 +256,6 @@ hr {
     margin-left: 4px;
 }
 
-/*
-.modal-content,
-.modal-footer {
-    background: #d6ac7c url('/static/img/back.png');
-}
-
-.modal-footer {
-    border-top: 0px solid #930e06;
-    margin: 0;
-    padding: 0 20px 10px 10px;
-}
-
-.modal-content .thumbnail {
-    margin-bottom: -2em;
-    align-content: center;
-}
-
-.modal-sm .modal-body {
-    padding-bottom: 0;
-}*/
-
 #login-logo {
     padding: 0 50px;
 }
