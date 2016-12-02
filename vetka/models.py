@@ -40,3 +40,5 @@ class Category(db.Model):
     goods = db.relationship('Good', backref='category', lazy='dynamic')
     goods2 = db.relationship('Good', secondary=GoodTag, lazy='dynamic')
     primary = False
+
+

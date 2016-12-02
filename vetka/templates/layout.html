@@ -56,43 +56,36 @@
     </div>{% endif %}
     {% if request.path=='/' %}<div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
-            <form action="/login" method="POST">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                        <div class="modal-title">Вход</div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login">
-                            <div class="login-screen">
-                                <div class="login-form">
-                                    <div class="pull-left">
-                                        <img src="/static/img/logo.png" alt="www.vetkaparfum.ru" title="Ветка" id="login-logo" />
-                                    </div>
-                                    <div class="control-group">
-                                        <input type="text" class="login-field" value="" placeholder="username"
-                                               name="username">
-                                        <label class="login-field-icon fui-user" for="login-name"></label>
-                                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <div class="modal-title">Вход</div>
+                </div>
 
-                                    <div class="control-group">
-                                        <input type="password" class="login-field" value="" placeholder="password"
-                                               name="password">
-                                        <label class="login-field-icon fui-lock" for="login-pass"></label>
-                                    </div>
-                                    <br />
-                                </div>
-                            </div>
+                <form action="/login" method="POST" id="login-form">
+                    <div class="modal-body">
+                        <img src="/static/img/logo.png" alt="www.vetkaparfum.ru" title="Ветка"
+                             id="login-logo" class="img-responsive"/>
+                        <div class="control-group inner-addon left-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <input type="text" class="login-field" value="" placeholder="username"
+                                   name="username" required>
                         </div>
+                        <div class="control-group inner-addon left-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                            <input type="password" class="login-field" value="" placeholder="password"
+                                   name="password">
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <input type="submit" value="Войти" class="btn btn-default btn-large">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     </div>
-            </form>
+                </form>
+            </div>
         </div>
-      </div>
     </div>{% endif %}
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -114,6 +107,11 @@
                     <li><a href="/category/hair">Волосы</a></li>
                     <li><a href="/category/parfum">Духи</a></li>
                     <li><a href="/category/nails">Ногти</a></li>
+                    {%- if session['logged_in'] %}
+                    <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="logout img-circle" /></a></li>
+                    <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="logout img-circle" /></a></li>
+                    <li><a href="/deleted-goods" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="logout img-circle" /></a></li>
+                    {% endif -%}
                 </ul>
             </div>
         </div>
@@ -183,7 +181,11 @@
             <div class="container">
                 <hr />
                 <div class="row">
-                {% if request.path=='/' %}<div class="pull-right" style="margin: 1em;"><a href="/login" id="login"><img src="/static/img/login.png" alt="Login" title="Login" /></a></div>{% endif %}
+                {%- if not session['logged_in'] %}
+                {%- if request.path=='/' %}
+                    <div class="pull-right" style="margin: 1em;"><a href="/login" id="login"><img src="/static/img/login.png" alt="Login" title="Login" /></a></div>
+                {% endif -%}
+                {% endif -%}
 {%- if g.yandexCounter %}
 <!-- Yandex.Metrika informer -->
 <a href="https://metrika.yandex.ru/stat/?id={{ g.yandexCounter }}&amp;from=informer"

@@ -221,6 +221,11 @@ ol.brace > li:before {
     border-color: #930e06;
 }
 
+.alert-success a {
+    color: #468847;
+    font-weight: bolder;
+}
+
 .cloud-cat a {
     font-weight: bolder;
     color: #930e06;
@@ -251,11 +256,7 @@ hr {
     margin-left: 4px;
 }
 
-.modal-header {
-    color: #000;
-    font-weight: bolder;
-    border-bottom: 0px solid #930e06;
-}
+/*
 .modal-content,
 .modal-footer {
     background: #d6ac7c url('/static/img/back.png');
@@ -263,22 +264,60 @@ hr {
 
 .modal-footer {
     border-top: 0px solid #930e06;
+    margin: 0;
+    padding: 0 20px 10px 10px;
 }
 
 .modal-content .thumbnail {
-   margin-bottom: -2em;
+    margin-bottom: -2em;
+    align-content: center;
+}
+
+.modal-sm .modal-body {
+    padding-bottom: 0;
+}*/
+
+#login-logo {
+    padding: 0 50px;
+}
+
+.modal-content {
+    background: #d6ac7c url('/static/img/back.png');
+}
+
+.modal-header {
+    color: #000;
+    font-weight: bolder;
+    border-bottom: 0px solid #930e06;
+}
+
+.modal-body {
+    position: relative;
+    padding: 5px 15px 0 15px;
+}
+
+.modal-footer {
+    padding-top: 5px;
+    text-align: right;
+    border-top: 0px;
+    margin-top: 0;
+}
+
+#login-form {
+    margin: 0px;
+    padding: 0px;
 }
 
 .close {
     color: #000;
     opacity: 0.8;
-    text-shadow: 0 1px 0 #daaa84;
+    text-shadow: 0 1px 0 #888;
 }
 
 .close:hover,
 .close:focus,
 .close.hover {
-    color: #930e06;
+    color: #000;
     opacity: 1;
 }
 
@@ -291,20 +330,43 @@ hr {
 }
 
 .modal-sm {
-    width: 480px;
+    width: 320px;
 }
 
 .login {
-    margin-bottom: -50px;
+    margin-bottom: 0px;
 }
 
 .login-field {
     color: #930e06;
-    padding: 4px 6px;
+    padding: 6px 6px;
     border: 1px solid #930e06;
     border-radius: 6px;
+    wigth: auto;
 }
 
-#login-logo {
-    margin: -2em 2em 1em 1em;
+.logout {
+    background-color: #daaa84;
+    margin: 0px;
+    padding: 0px
 }
+
+/* enable absolute positioning */
+.inner-addon {
+    position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }

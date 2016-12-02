@@ -1,0 +1,15 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+        {%- if goods %}
+        <h3>Удалённые товары</h3>
+        {% for good in goods %}
+        {% set loop1 = loop %}
+        {% include 'good-view.html' %}
+        {% endfor %}
+        {%- else -%}
+        <h3>Удалённые товары отсутствуют</h3>
+        {% endif -%}
+    </div>
+{% endblock %}

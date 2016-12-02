@@ -11,11 +11,15 @@
         {% if good.description %}{{ good.description }}{% endif %}
         <br />
         <br />
-        <p><a class="btn btn-default" href="/good/{{ good.name_en }}">Подробнее &raquo;</a></p>
+        <p><a class="btn btn-default" href="/good/{{ good.name_en }}">Подробнее &raquo;</a>
+        {%- if session['logged_in'] and good.deleted %}
+        <a class="btn btn-default" href="/good/restore/{{ good.name_en }}">Восстановить</a>
+        {% endif -%}
+        </p>
     </div>
 </div>
 <div class="row">
     <div class="visible-sm visible-xs hidden-md hidden-lg">
         {% if not loop1.last %}    <hr /> {% endif %}
-       </div>
+    </div>
 </div>

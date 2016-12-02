@@ -6,12 +6,21 @@
         </a>
     </div>
     <div class="col-sm-5">
-        <h3>{{good.product}}{% if good.name %} &laquo;{{ good.name }}&raquo;{% endif %}</h3>
+        <h3>{{good.product}}{% if good.name %} &laquo;{{ good.name }}&raquo;{% endif %}{% if good.deleted %} (удалено){% endif %}</h3>
         <br />
         <p><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
         <br />
         <h4>{{ good.price }}&nbsp;<span class="rub">руб.</span></h4>
         <br />
         <h4><a href="/tag/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endfor %}{% endif %}</h4>
+        {% if session['logged_in'] %}
+            <br />
+            {%- if good.deleted %}
+            <p><a class="btn btn-default" href="/good/restore/{{ good.name_en }}">Восстановить</a></p>
+            {%- else -%}
+            <p><a class="btn btn-default" href="/good/edit/{{ good.name_en }}">Редактировать &raquo;</a>
+            <a class="btn btn-default" href="/good/delete/{{ good.name_en }}">Удалить &raquo;</a></p>
+            {% endif -%}
+        {% endif %}
     </div>
 {% endblock %}
