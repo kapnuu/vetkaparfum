@@ -324,7 +324,7 @@ hr {
     wigth: auto;
 }
 
-.logout {
+.navbar-admin-img {
     background-color: #daaa84;
     margin: 0px;
     padding: 0px
@@ -349,3 +349,9 @@ hr {
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
+
+.li-tags-select li {
+    float: left;
+    margin: 0 12px;
+    list-style: none;
+}

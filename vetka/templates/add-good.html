@@ -1,0 +1,57 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+
+    {%- for e in form.errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ e }}</strong>: {{ form.errors[e] }}
+        </div>
+    {% endfor -%}
+
+        <h3>{% if form.id %}Редактировать {{ form.name_en.data }}{% else %}Добавить товар{% endif %}</h3>
+        <br />
+        <form role="form" action="{% if form.id %}/good/edit/{{ form.id.data }}{% else %}/good/add{% endif %}"
+              method="POST" name="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="product">Заголовок:</label>
+                {{ form.product(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="name">Подзаголовок:</label>
+                {{ form.name(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="name_en">Перевод (англ.):</label>
+                {{ form.name_en(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="image">Изображение (<a href="#" onclick="preview_img('#image');">проверить</a>):</label>
+                {{ form.image(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                {{ form.category(class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="price">Цена, <span class="rub">руб.</span>:</label>
+                {{ form.price(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Теги:</label>
+                {{ form.tags(class_='li-tags-select') }}
+            </div>
+
+            <button type="submit" class="btn btn-default pull-left" style="clear: left; margin-top: 1em;">{% if form.id %}Редактировать{% else %}Добавить{% endif %}</button>
+
+        </form>
+    </div>
+{% endblock %}

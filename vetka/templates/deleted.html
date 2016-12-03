@@ -11,5 +11,16 @@
         {%- else -%}
         <h3>Удалённые товары отсутствуют</h3>
         {% endif -%}
+
+        {%- if tags %}
+        <h3>Удалённые теги</h3>
+        <br/>
+        {% for tag in tags %}
+        {% set loop1 = loop %}
+        {% include 'category-view.html' %}
+        {% endfor %}
+        {%- else -%}
+        <h3>Удалённые теги отсутствуют</h3>
+        {% endif -%}
     </div>
 {% endblock %}

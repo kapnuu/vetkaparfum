@@ -1,0 +1,17 @@
+﻿<h3><a href="/tag/{{ tag.name_en }}">#{{ tag.name }}</a></h3><br/>
+{%- if tag.description %}
+    <a href="#descr-{{ tag.name_en }}" data-toggle="collapse">
+        <img src="/static/img/description.png" class="icon" /><strong>Описание</strong>
+    </a><br/>
+    <div id="descr-{{ tag.name_en }}" class="collapse">
+        <article>{{ tag.description|safe }}</article>
+    </div>
+    <br/>
+{% endif -%}
+{%- if tag.deleted %}
+<a class="btn btn-default" href="/tag/restore/{{ tag.name_en }}">Восстановить</a>
+{%- else -%}
+<a class="btn btn-default" href="/tag/edit/{{ tag.name_en }}">Редактировать &raquo;</a>
+<a class="btn btn-default" href="/tag/delete/{{ tag.name_en }}">Удалить</a>
+{% endif -%}
+ {% if not loop1.last %}<hr />{% endif %}

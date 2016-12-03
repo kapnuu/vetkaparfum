@@ -1,0 +1,12 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+        <a class="btn btn-default" href="/tag/add">Добавить новый тег</a>
+        <hr/>
+        {% for tag in tags %}
+        {% set loop1 = loop %}
+        {% include 'category-view.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}

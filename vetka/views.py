@@ -1,11 +1,11 @@
 ﻿from datetime import datetime
 from flask import render_template, redirect, url_for, flash, g, send_from_directory, request, session
-from vetka import app, models, db, tagcloud, security
+from vetka import app, models, db, tagcloud, security, forms
 from sqlalchemy import and_, or_, desc
 import random
 import string
 import jinja2
-from os import path, environ, urandom
+from os import path, environ
 
 g_tags = None
 
@@ -36,9 +36,32 @@ def find_good(good_id, allow_deleted=False):
         gg = models.Good.query.filter(models.Good.id == good_id).first()
     if gg is None:
         gg = models.Good.query.filter(models.Good.name_en == good_id).first()
-    if gg.deleted and not allow_deleted:
+    if gg is not None and gg.deleted and not allow_deleted:
         gg = None
     return gg
+
+
+def find_tag(tag_id, allow_deleted=False):
+    tt = None
+    if tag_id.isdigit():
+        tt = models.Category.query.filter(models.Category.id == tag_id).first()
+    if tt is None:
+        tt = models.Category.query.filter(models.Category.name_en == tag_id).first()
+    if tt is not None and tt.deleted and not allow_deleted:
+        tt = None
+    return tt
+
+
+def find_tag_not_cat(tag_id, allow_deleted=False):
+    tt = None
+    if tag_id.isdigit():
+        tt = models.Category.query.filter(and_(models.Category.id == tag_id, models.Category.primary == False)).first()
+    if tt is None:
+        tt = models.Category.query.filter(
+            and_(models.Category.name_en == tag_id, models.Category.primary == False)).first()
+    if tt is not None and tt.deleted and not allow_deleted:
+        tt = None
+    return tt
 
 
 @app.route('/favicon.ico')
@@ -61,14 +84,20 @@ def before_request():
         tag_list = {}
         goods = models.Good.query.filter(models.Good.deleted == False)
         for gg in goods:
-            gg.category.primary = True
+            # gg.category.primary = True
             increment_tag_count(gg.category, tag_list)
             for tag in gg.tags:
-                increment_tag_count(tag, tag_list)
+                if not tag.deleted:
+                    increment_tag_count(tag, tag_list)
         g_tags = tagcloud.tagcloud(tag_list)
     g.tags = g_tags
     g.vk_group = environ.get('VK_GROUP')
     g.yandexCounter = environ.get('YANDEX_COUNTER')
+
+
+@app.route('/good')
+def home2():
+    return home()
 
 
 @app.route('/')
@@ -142,9 +171,8 @@ def good(good_id):
 @app.route('/tag/<tag_id>')
 @app.route('/category/<tag_id>')
 def category(tag_id):
-    cat = models.Category.query.filter_by(name_en=tag_id).first()
-    if cat is None:
-        cat = models.Category.query.filter_by(name=tag_id).first()
+    allow_deleted = session.get('logged_in') is not None;
+    cat = find_tag(tag_id, allow_deleted)
     if cat is None:
         flash('Category <strong>' + tag_id + '</strong> not found.', category='error')
         return redirect(url_for('home'))
@@ -163,28 +191,49 @@ def category(tag_id):
     )
 
 
+@app.route('/tag')
+@app.route('/category')
+def tag_list():
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    tags = models.Category.query.filter(
+        and_(models.Category.deleted == False, models.Category.primary == False)).order_by(models.Category.name)
+
+    return render_template(
+        'tags.html',
+        title='Натуральная косметика',
+        year=datetime.now().year,
+        tags=tags
+    )
+
+
 def unauthorized():
     if not session.get('logged_in'):
         flash('You must be authorized for this action.', category='error')
         return True
 
 
-@app.route('/deleted-goods')
+@app.route('/grave')
 def grave():
     if unauthorized():
         return redirect(url_for('home'))
 
     goods = models.Good.query.filter(models.Good.deleted).order_by(desc(models.Good.priority))
+
+    tags = models.Category.query.filter(models.Category.deleted).order_by(models.Category.name)
+
     return render_template(
         'deleted.html',
         title='Натуральная косметика',
         year=datetime.now().year,
-        goods=goods if goods.first() is not None else None
+        goods=goods if goods.first() is not None else None,
+        tags=tags if tags.first() is not None else None
     )
 
 
 @app.route('/good/restore/<good_id>')
-def restore(good_id):
+def good_restore(good_id):
     if unauthorized():
         return redirect(url_for('home'))
 
@@ -203,13 +252,13 @@ def restore(good_id):
     gg.deleted = False
     db.session.commit()
     flash('Good <a href=' + url_for('good', good_id=good_id) + '>' + good_id + '</a> restored. <a href=' +
-          url_for('delete', good_id=good_id) + '>Delete?</a>', category='success')
+          url_for('good_delete', good_id=good_id) + '>Delete?</a>', category='success')
 
     return redirect(url_for('home'))
 
 
 @app.route('/good/delete/<good_id>')
-def delete(good_id):
+def good_delete(good_id):
     if unauthorized():
         return redirect(url_for('home'))
 
@@ -228,5 +277,195 @@ def delete(good_id):
     gg.deleted = True
     db.session.commit()
     flash('Good <a href=' + url_for('good', good_id=good_id) + '>' + good_id + '</a> deleted. <a href=' +
-          url_for('restore', good_id=good_id) + '>Restore?</a>', category='success')
+          url_for('good_restore', good_id=good_id) + '>Restore?</a>', category='success')
+    return redirect(url_for('home'))
+
+
+@app.route('/good/add', methods=['GET', 'POST'])
+def good_add():
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    form = forms.AddGoodForm()
+    if form.validate_on_submit():
+        product = form.product.data
+        name = form.name.data
+        name_en = form.name_en.data
+        image = form.image.data
+        cat = models.Category.query.filter(models.Category.id == form.category.data).first()
+        price = form.price.data
+        tags = [models.Category.query.filter(models.Category.id == t_id).first() for t_id in form.tags.data]
+
+        new_good = models.Good(product=product, name=name, name_en=name_en, image=image, category=cat, price=price,
+                               tags=tags)
+
+        global g_tags
+        g_tags = None
+
+        db.session.add(new_good)
+        db.session.commit()
+        flash('New good <a href=' + url_for('good', good_id=new_good.name_en) + '>' + new_good.name_en + '</a> added.',
+              category='success')
+
+        return redirect(url_for('home'))
+
+    return render_template('add-good.html', form=form, good_page=True)
+
+
+@app.route('/good/edit/<good_id>', methods=['GET', 'POST'])
+def good_edit(good_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    gg = find_good(good_id, False)
+    if gg is None:
+        flash('Good <strong>' + good_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+
+    form = forms.EditGoodForm()
+    if form.validate_on_submit():
+        gg.product = form.product.data
+        gg.name = form.name.data
+        gg.name_en = form.name_en.data
+        gg.image = form.image.data
+        gg.cat = models.Category.query.filter(models.Category.id == form.category.data).first()
+        gg.price = form.price.data
+        gg.tags = [models.Category.query.filter(models.Category.id == t_id).first() for t_id in form.tags.data]
+
+        db.session.commit()
+        flash('Good <a href=' + url_for('good', good_id=gg.name_en) + '>' + gg.name_en + '</a> updated.',
+              category='success')
+
+        return redirect(url_for('home'))
+
+    form.id.data = gg.id
+    form.product.data = gg.product
+    form.name.data = gg.name
+    form.name_en.data = gg.name_en
+    form.image.data = gg.image
+    form.category.data = gg.category.id
+    form.price.data = gg.price
+    form.tags.data = [t.id for t in gg.tags]
+
+    return render_template('add-good.html', form=form, good_page=True)
+
+
+@app.route('/tag/delete/<tag_id>')
+def tag_delete(tag_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    tt = find_tag_not_cat(tag_id, True)
+    if tt is None:
+        flash('Tag <strong>' + tag_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+    if tt.deleted:
+        flash('Tag <a href=' + url_for('tag_list', tag_id=tag_id) + '>' + tag_id + '</a> already deleted.',
+              category='error')
+        return redirect(url_for('home'))
+
+    global g_tags
+    g_tags = None
+
+    tt.deleted = True
+    db.session.commit()
+    flash('Tag <a href=' + url_for('tag_list', tag_id=tag_id) + '>' + tag_id + '</a> deleted. <a href=' +
+          url_for('tag_restore', tag_id=tag_id) + '>Restore?</a>', category='success')
+    return redirect(url_for('home'))
+
+
+@app.route('/tag/restore/<tag_id>')
+def tag_restore(tag_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    tt = find_tag_not_cat(tag_id, True)
+    if tt is None:
+        flash('Tag <strong>' + tag_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+    if not tt.deleted:
+        flash('Tag <a href=' + url_for('tag_list', tag_id=tag_id) + '>' + tag_id +
+              '</a> not deleted. Nothing to restore.', category='error')
+        return redirect(url_for('home'))
+
+    global g_tags
+    g_tags = None
+
+    tt.deleted = False
+    db.session.commit()
+    flash('Tag <a href=' + url_for('tag_list', tag_id=tag_id) + '>' + tag_id + '</a> restored. <a href=' +
+          url_for('tag_delete', tag_id=tag_id) + '>Delete?</a>', category='success')
+
+    return redirect(url_for('home'))
+
+
+@app.route('/tag/add', methods=['GET', 'POST'])
+def tag_add():
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    form = forms.AddTagForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        name_en = form.name_en.data
+        description = form.description.data
+
+        new_tag = models.Category(name=name, name_en=name_en,description=description)
+
+        db.session.add(new_tag)
+        db.session.commit()
+        flash('New tag <a href=' + url_for('category', tag_id=new_tag.name_en) + '>#' + new_tag.name + '</a> added.',
+              category='success')
+
+        return redirect(url_for('home'))
+
+    return render_template('add-tag.html', form=form, good_page=True)
+
+
+@app.route('/tag/edit/<tag_id>', methods=['GET', 'POST'])
+def tag_edit(tag_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    tt = find_tag_not_cat(tag_id, True)
+    if tt is None:
+        flash('Tag <strong>' + tag_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+
+    form = forms.EditTagForm()
+    if form.validate_on_submit():
+        tt.name = form.name.data
+        tt.name_en = form.name_en.data
+        tt.description = form.description.data
+
+        db.session.commit()
+        flash('Tag <a href=' + url_for('category', tag_id=tt.name_en) + '>#' + tt.name + '</a> updated.',
+              category='success')
+        return redirect(url_for('home'))
+
+    form.id.data = tt.id
+    form.name.data = tt.name
+    form.name_en.data = tt.name_en
+    form.description.data = tt.description
+
+    return render_template('add-tag.html', form=form, good_page=True)
+
+
+@app.route('/fix/<fix_id>')
+def fix(fix_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    if fix_id == 'cat-primary':
+        global g_tags
+        g_tags = None
+
+        for cat in models.Category.query.all():
+            cat.primary = cat.name_en in ['face', 'body', 'hair', 'parfum', 'nails']
+
+        db.session.commit()
+        flash('Fix <strong>' + fix_id + '</strong> applied.', category='success')
+    else:
+        flash('Fix <strong>' + fix_id + '</strong> not found.', category='error')
+
     return redirect(url_for('home'))

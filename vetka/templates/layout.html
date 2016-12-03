@@ -108,9 +108,10 @@
                     <li><a href="/category/parfum">Духи</a></li>
                     <li><a href="/category/nails">Ногти</a></li>
                     {%- if session['logged_in'] %}
-                    <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="logout img-circle" /></a></li>
-                    <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="logout img-circle" /></a></li>
-                    <li><a href="/deleted-goods" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="logout img-circle" /></a></li>
+                    <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="navbar-admin-img img-circle" /></a></li>
+                    <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="navbar-admin-img img-circle" /></a></li>
+                    <li><a href="/tag" style="padding: 8px 12px;"><img src="/static/img/hashtag.png" class="navbar-admin-img img-circle" /></a></li>
+                    <li><a href="/grave" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="navbar-admin-img img-circle" /></a></li>
                     {% endif -%}
                 </ul>
             </div>
@@ -215,6 +216,13 @@ style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Ме
         $("#image-modal").modal('hide')
       });
     });
+    </script>
+        <script>
+        function preview_img(elem_id) {
+            event.preventDefault();
+            $('#image-modal .modal-body img').attr('src', $(elem_id).val());
+            $("#image-modal").modal('show');
+        }
     </script>{% endif %}
     {% if request.path=='/' %}<script>
     $(function() {
