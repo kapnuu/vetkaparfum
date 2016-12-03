@@ -39,6 +39,6 @@ class Category(db.Model):
     deleted = db.Column(db.Boolean, default=0)
     goods = db.relationship('Good', backref='category', lazy='dynamic')
     goods2 = db.relationship('Good', secondary=GoodTag, lazy='dynamic')
-    primary = db.Column(db.Boolean, default=0)
+    primary = db.Column(db.Boolean, default=False)
 
 

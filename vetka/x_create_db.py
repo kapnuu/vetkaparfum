@@ -1,9 +1,13 @@
 ﻿from vetka import app, models, db
-from flask import redirect, url_for, flash
+from flask import redirect, url_for, flash, session
 
 
 @app.route('/create')
 def create_db():
+    if not session.get('logged_in'):
+        flash('You must be authorized for this action.', category='error')
+        return redirect(url_for('home'))
+
     gg = models.Good.query.all()
     for g in gg:
         db.session.delete(g)
