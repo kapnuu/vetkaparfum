@@ -50,7 +50,7 @@ class EditGoodForm(AddGoodForm):
 class AddTagForm(FlaskForm):
     name = wtforms.StringField('name', validators=[DataRequired()])
     name_en = wtforms.StringField('name_en', validators=[DataRequired()])
-    description = wtforms.StringField('description')
+    description = wtforms.TextAreaField('description')
 
     def __init__(self, *args, **kwargs):
         FlaskForm.__init__(self, *args, **kwargs)
