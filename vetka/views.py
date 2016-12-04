@@ -472,3 +472,8 @@ def fix(fix_id):
         flash('Fix <strong>' + fix_id + '</strong> not found.', category='error')
 
     return redirect(url_for('home'))
+
+
+@app.route('/google46a636bc8045167a.html')
+def hello_google():
+    return 'google-site-verification: google46a636bc8045167a.html'
