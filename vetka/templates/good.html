@@ -22,5 +22,21 @@
             <a class="btn btn-default" href="/good/delete/{{ good.name_en }}">Удалить</a></p>
             {% endif -%}
         {% endif %}
+    {%- if see_also %}
+            <br />
+            <div style="clear: left">
+                <strong>Смотрите также:</strong>
+            {%- for tag in see_also %}
+                <a href="#descr-{{ tag.name_en }}" data-toggle="collapse">
+                    <img src="/static/img/description.png" class="icon" /><strong>{{ tag.name }}</strong>
+                </a>
+                <div id="descr-{{ tag.name_en }}" class="collapse">
+                    <br/>
+                    <article>{{ tag.description|safe }}</article>
+                    <br/>
+                </div>
+            {% endfor -%}
+            </div>
+        {% endif -%}
     </div>
 {% endblock %}

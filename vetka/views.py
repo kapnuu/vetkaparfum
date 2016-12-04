@@ -150,11 +150,13 @@ def logout():
 
 @app.route('/good/<good_id>')
 def good(good_id):
-    allow_deleted = session.get('logged_in') is not None;
+    allow_deleted = session.get('logged_in') is not None
     gg = find_good(good_id, allow_deleted)
     if gg is None:
         flash('Good <strong>' + good_id + '</strong> not found.', category='error')
         return redirect(url_for('home'))
+
+    see_also = [t for t in gg.tags if t.description]
 
     title = gg.product
     if gg.name:
@@ -164,6 +166,7 @@ def good(good_id):
         title=title,
         year=datetime.now().year,
         good=gg,
+        see_also=see_also,
         good_page=True
     )
 
@@ -171,7 +174,7 @@ def good(good_id):
 @app.route('/tag/<tag_id>')
 @app.route('/category/<tag_id>')
 def category(tag_id):
-    allow_deleted = session.get('logged_in') is not None;
+    allow_deleted = session.get('logged_in') is not None
     cat = find_tag(tag_id, allow_deleted)
     if cat is None:
         flash('Category <strong>' + tag_id + '</strong> not found.', category='error')
