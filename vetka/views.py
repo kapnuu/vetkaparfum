@@ -294,14 +294,15 @@ def good_add():
         product = form.product.data
         name = form.name.data
         name_en = form.name_en.data
+        description = form.description
         image = form.image.data
         cat = models.Category.query.filter(models.Category.id == form.category.data).first()
         price = form.price.data
         priority = form.priority.data
         tags = [models.Category.query.filter(models.Category.id == t_id).first() for t_id in form.tags.data]
 
-        new_good = models.Good(product=product, name=name, name_en=name_en, image=image, category=cat, price=price,
-                               priority=priority, tags=tags)
+        new_good = models.Good(product=product, name=name, name_en=name_en, description=description, image=image,
+                               category=cat, price=price, priority=priority, tags=tags)
 
         global g_tags
         g_tags = None
@@ -331,6 +332,7 @@ def good_edit(good_id):
         gg.product = form.product.data
         gg.name = form.name.data
         gg.name_en = form.name_en.data
+        gg.description = form.description.data
         gg.image = form.image.data
         gg.cat = models.Category.query.filter(models.Category.id == form.category.data).first()
         gg.price = form.price.data
@@ -347,6 +349,7 @@ def good_edit(good_id):
     form.product.data = gg.product
     form.name.data = gg.name
     form.name_en.data = gg.name_en
+    form.description.data = gg.description
     form.image.data = gg.image
     form.category.data = gg.category.id
     form.price.data = gg.price
