@@ -308,6 +308,10 @@ hr {
     margin: 1em;
 }
 
+.modal-md {
+    width: 480px;
+}
+
 .modal-sm {
     width: 320px;
 }
