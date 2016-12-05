@@ -6,7 +6,10 @@
         </a>
     </div>
     <div class="col-sm-5">
-        <h3>{{good.product}}{% if good.name %} &laquo;{{ good.name }}&raquo;{% endif %}{% if good.deleted %} (удалено){% endif %}</h3>
+        <h3>{{good.product}}
+            {%- if good.name %} <nobr>&laquo;{{ good.name }}&raquo;</nobr>{% endif -%}
+            {%- if good.deleted %} (удалено){% endif -%}
+        </h3>
         <br />
         <p><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
         <br />
