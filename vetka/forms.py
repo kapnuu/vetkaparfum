@@ -27,7 +27,8 @@ class AddGoodForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
 
         self.category.choices = [(cat.id, cat.name) for cat in models.Category.query.all() if cat.primary]
-        self.tags.choices = [(tag.id, tag.name) for tag in models.Category.query.all() if not tag.primary]
+        self.tags.choices = sorted([(tag.id, tag.name) for tag in models.Category.query.all() if not tag.primary],
+                                   key=lambda t: t[1])
 
     def validate(self):
         if not FlaskForm.validate(self):
