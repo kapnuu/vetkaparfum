@@ -15,6 +15,7 @@ class AddGoodForm(FlaskForm):
     product = wtforms.StringField('product', validators=[DataRequired()])
     name = wtforms.StringField('name')
     name_en = wtforms.StringField('name_en', validators=[DataRequired()])
+    description = wtforms.TextAreaField('description', validators=[DataRequired()])
     image = wtforms.StringField('image', validators=[DataRequired()])
     category = wtforms.SelectField('category', coerce=int)
     price = wtforms.IntegerField('price', validators=[DataRequired(), NumberRange(0, 1000)])
