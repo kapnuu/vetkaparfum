@@ -18,6 +18,8 @@ class AddGoodForm(FlaskForm):
     image = wtforms.StringField('image', validators=[DataRequired()])
     category = wtforms.SelectField('category', coerce=int)
     price = wtforms.IntegerField('price', validators=[DataRequired(), NumberRange(0, 1000)])
+    priority = wtforms.RadioField('priority', coerce=int, choices=[(3, 'высокий'), (2, 'средний'), (1, 'низкий')],
+                                  default=2)
     tags = MultiCheckboxField('tags', coerce=int)
 
     def __init__(self, *args, **kwargs):

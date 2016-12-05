@@ -297,10 +297,11 @@ def good_add():
         image = form.image.data
         cat = models.Category.query.filter(models.Category.id == form.category.data).first()
         price = form.price.data
+        priority = form.priority.data
         tags = [models.Category.query.filter(models.Category.id == t_id).first() for t_id in form.tags.data]
 
         new_good = models.Good(product=product, name=name, name_en=name_en, image=image, category=cat, price=price,
-                               tags=tags)
+                               priority=priority, tags=tags)
 
         global g_tags
         g_tags = None
@@ -333,6 +334,7 @@ def good_edit(good_id):
         gg.image = form.image.data
         gg.cat = models.Category.query.filter(models.Category.id == form.category.data).first()
         gg.price = form.price.data
+        gg.priority = form.priority.data
         gg.tags = [models.Category.query.filter(models.Category.id == t_id).first() for t_id in form.tags.data]
 
         db.session.commit()
@@ -348,6 +350,7 @@ def good_edit(good_id):
     form.image.data = gg.image
     form.category.data = gg.category.id
     form.price.data = gg.price
+    form.priority.data = gg.priority
     form.tags.data = [t.id for t in gg.tags]
 
     return render_template('add-good.html', form=form, good_page=True)
