@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 import wtforms
 # from wtforms import StringField, BooleanField, TextAreaField, SelectField, FileField, IntegerField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms.validators import DataRequired, NumberRange
 from vetka import models
 
 
@@ -60,7 +60,8 @@ class AddTagForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
 
     def validate(self):
-        if not FlaskForm.validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
             return False
 
         if self.__class__.__name__ == 'AddTagForm':

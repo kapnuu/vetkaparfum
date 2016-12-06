@@ -7,7 +7,7 @@ class Config:
     DEBUG = False
 
     CSRF_ENABLED = True
-    SECRET_KEY = 'you-will-never-guess'
+    SECRET_KEY = os.urandom(16)
 
     database_uri = os.environ.get('DATABASE_URL')
     if database_uri is None:
