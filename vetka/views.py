@@ -115,6 +115,15 @@ def home():
     )
 
 
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    name = request.form['feedback-name']
+    phone = request.form['feedback-phone']
+    comment = request.form['feedback-comment']
+    flash('Not implemented', category='error')
+    return redirect(url_for('home'))
+
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
