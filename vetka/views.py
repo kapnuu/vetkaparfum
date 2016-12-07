@@ -1,4 +1,5 @@
-﻿from datetime import datetime
+﻿import sys
+from datetime import datetime
 from flask import render_template, redirect, url_for, flash, g, send_from_directory, request, session
 from vetka import app, models, db, tagcloud, security, forms
 from sqlalchemy import and_, or_, desc
@@ -158,6 +159,7 @@ def feedback():
                     print(response.headers)
                     sent = True
                 except:
+                    print("Unexpected error:", sys.exc_info()[0])
                     pass
 
     dst_phone = app.config.get('FEEDBACK_PHONE_DST')
@@ -178,8 +180,9 @@ def feedback():
                         client = TwilioRestClient(account_sid, auth_token)
                         client.messages.create(from_=src_phone, to=dst_phone, body=sms)
                         sent = True
+                        print('sent: %s' % sms)
                     except:
-                        pass
+                        print("Unexpected error:", sys.exc_info()[0])
 
     if sent:
         flash('Ваше сообщение отправлено', category='success')
