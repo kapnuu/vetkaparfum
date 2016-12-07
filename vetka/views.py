@@ -6,6 +6,8 @@ import random
 import string
 import jinja2
 from os import path, environ
+import re
+
 
 g_tags = None
 
@@ -120,7 +122,20 @@ def feedback():
     name = request.form['feedback-name']
     phone = request.form['feedback-phone']
     comment = request.form['feedback-comment']
-    flash('Not implemented', category='error')
+
+    phone = re.sub('[^0-9]', '', phone)
+    if len(phone) != 11:
+        flash('Введите ваш номер телефона', category='error')
+        return redirect(url_for('home'))
+
+    message = phone
+    if name:
+        message = '%s %s' % (message, name)
+    if comment:
+        message = '%s + comment' % message
+
+    print('Message from your trial Twilio account: %s' % message)
+    flash('Ваше сообщение отправлено', category='success')
     return redirect(url_for('home'))
 
 
