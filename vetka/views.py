@@ -477,3 +477,9 @@ def fix(fix_id):
 @app.route('/google46a636bc8045167a.html')
 def hello_google():
     return 'google-site-verification: google46a636bc8045167a.html'
+
+
+@app.route('/d14183fa9351.html')
+def hello_yandex():
+    return 'b5ccc9e13bdf'
+
