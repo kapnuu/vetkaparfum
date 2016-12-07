@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 import wtforms
 # from wtforms import StringField, BooleanField, TextAreaField, SelectField, FileField, IntegerField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, Length, NumberRange
 from vetka import models
 
 
@@ -27,18 +27,18 @@ class AddGoodForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
 
         self.category.choices = [(cat.id, cat.name) for cat in models.Category.query.all() if cat.primary]
-        self.tags.choices = sorted([(tag.id, tag.name) for tag in models.Category.query.all() if not tag.primary],
-                                   key=lambda t: t[1])
+        self.tags.choices = [(tag.id, tag.name) for tag in models.Category.query.all() if not tag.primary]
 
     def validate(self):
         if not FlaskForm.validate(self):
             return False
 
-        if self.__class__.__name__ == 'AddGoodForm':
-            existing = models.Good.query.filter(models.Good.name_en == self.name_en.data).first()
-            if existing is not None:
+        existing = models.Good.query.filter(models.Good.name_en == self.name_en.data).first()
+        if existing is not None:
+            if not getattr(self.__class__, 'id', None) or existing.id != int(self.id.data):
                 self.name_en.errors.append('Good ' + existing.name_en + ' already exists')
                 return False
+
         return True
 
 
@@ -60,13 +60,12 @@ class AddTagForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
 
     def validate(self):
-        rv = FlaskForm.validate(self)
-        if not rv:
+        if not FlaskForm.validate(self):
             return False
 
-        if self.__class__.__name__ == 'AddTagForm':
-            existing = models.Category.query.filter(models.Category.name_en == self.name_en.data).first()
-            if existing is not None:
+        existing = models.Category.query.filter(models.Category.name_en == self.name_en.data).first()
+        if existing is not None:
+            if not getattr(self.__class__, 'id', None) or existing.id != int(self.id.data):
                 self.name_en.errors.append('Tag ' + existing.name_en + ' already exists')
                 return False
         return True
