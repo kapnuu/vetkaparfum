@@ -6,6 +6,11 @@ import random
 import string
 import jinja2
 from os import path, environ
+import re
+import sendgrid
+from sendgrid.helpers.mail import *
+from twilio.rest import TwilioRestClient
+
 
 g_tags = None
 
@@ -113,6 +118,77 @@ def home():
         year=datetime.now().year,
         goods=goods
     )
+
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    name = request.form['feedback-name']
+    phone = request.form['feedback-phone']
+    comment = request.form['feedback-comment']
+
+    phone = re.sub('[^0-9]', '', phone)
+    if len(phone) != 11:
+        flash('Введите ваш номер телефона', category='error')
+        return redirect(url_for('home'))
+
+    sent = False
+
+    token = app.config.get('SENDGRID_API_TOKEN')
+    if token is not None:
+        feedback_receiver = app.config.get('FEEDBACK_RECEIVER')
+        if feedback_receiver is not None:
+            feedback_sender = app.config.get('FEEDBACK_SENDER')
+            if feedback_sender is not None:
+                email = ' phone: %s' % phone
+                if name:
+                    email = '%s \r\n name: %s' % (email, name)
+                if comment:
+                    email = '%s \r\n comment: %s' % (email, comment)
+
+                try:
+                    sg = sendgrid.SendGridAPIClient(apikey=token)
+                    from_email = Email(feedback_sender)
+                    subject = "New feedback for Vetka"
+                    to_email = Email(feedback_receiver)
+                    content = Content("text/plain", email)
+                    sgmail = Mail(from_email, subject, to_email, content)
+                    response = sg.client.mail.send.post(request_body=sgmail.get())
+                    print(response.status_code)
+                    print(response.body)
+                    print(response.headers)
+                    sent = True
+                except:
+                    pass
+
+    dst_phone = app.config.get('FEEDBACK_PHONE_DST')
+    if dst_phone:
+        src_phone = app.config.get('FEEDBACK_PHONE_SRC')
+        if src_phone:
+            account_sid = app.config.get('TWILIO_ACCOUNT_SID')
+            if account_sid:
+                auth_token = app.config.get('TWILIO_AUTH_TOKEN')
+                if auth_token:
+                    sms = phone
+                    if name:
+                        sms = '%s %s' % (sms, name)
+                    if comment:
+                        sms = '%s + comment' % sms
+
+                    try:
+                        client = TwilioRestClient(account_sid, auth_token)
+                        client.messages.create(from_=src_phone, to=dst_phone, body=sms)
+                        sent = True
+                    except:
+                        pass
+
+    if sent:
+        flash('Ваше сообщение отправлено', category='success')
+    else:
+        flash('Похоже, у нас есть проблемы с отправкой формы. '
+              'Попробуйте воспользоваться другим способом связи <strong>:(</strong>',
+              category='error')
+        print('Failed to send message: %s' % sms)
+    return redirect(url_for('home'))
 
 
 @app.route('/login', methods=['POST'])
