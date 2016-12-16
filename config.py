@@ -16,7 +16,7 @@ class Config:
         SQLALCHEMY_DATABASE_URI = database_uri
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_MIGRATE_REPO = None
+    SQLALCHEMY_MIGRATE_REPO = 'db_repository'
 
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME')
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
