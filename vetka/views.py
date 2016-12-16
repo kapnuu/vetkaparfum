@@ -6,6 +6,7 @@ from sqlalchemy import and_, or_, desc
 import random
 import string
 import jinja2
+import os
 from os import path, environ
 import re
 import sendgrid
@@ -110,6 +111,8 @@ def home2():
 def home():
     global g_tags
     g_tags = None
+
+    print(os.listdir())
 
     goods = models.Good.query.filter(models.Good.deleted == False).order_by(desc(models.Good.priority))
 
@@ -544,13 +547,19 @@ def fix(fix_id):
     if unauthorized():
         return redirect(url_for('home'))
 
+    success = False
     if fix_id == 'cat-primary':
         global g_tags
         g_tags = None
 
         for cat in models.Category.query.all():
             cat.primary = cat.name_en in ['face', 'body', 'hair', 'parfum', 'nails']
+        success = True
+    elif fix_id == 'reviews':
 
+        pass
+
+    if success:
         db.session.commit()
         flash('Fix <strong>' + fix_id + '</strong> applied.', category='success')
     else:
