@@ -40,7 +40,11 @@
                 </div>
             {% endfor -%}
         </div>
-        <!-- {{ good.reviews }} -->
+        <!-- ++++
+            {% for review in good.reviews %}
+             -{{ review }}-
+            {% endfor %}
+        ++++ -->
     {% endif -%}
     </div>
 {% endblock %}
