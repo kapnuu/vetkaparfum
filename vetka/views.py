@@ -112,8 +112,6 @@ def home():
     global g_tags
     g_tags = None
 
-    print(os.listdir('vetka'))
-
     goods = models.Good.query.filter(models.Good.deleted == False).order_by(desc(models.Good.priority))
 
     return render_template(
@@ -555,9 +553,6 @@ def fix(fix_id):
         for cat in models.Category.query.all():
             cat.primary = cat.name_en in ['face', 'body', 'hair', 'parfum', 'nails']
         success = True
-    elif fix_id == 'reviews':
-
-        pass
 
     if success:
         db.session.commit()
