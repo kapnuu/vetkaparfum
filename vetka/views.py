@@ -112,7 +112,7 @@ def home():
     global g_tags
     g_tags = None
 
-    print(os.listdir())
+    print(os.listdir('vetka'))
 
     goods = models.Good.query.filter(models.Good.deleted == False).order_by(desc(models.Good.priority))
 
