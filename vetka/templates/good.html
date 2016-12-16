@@ -26,12 +26,12 @@
             {% endif -%}
         {% endif %}
     {%- if see_also %}
-            <br />
-            <div style="clear: left">
-                <strong>Смотрите также:</strong>
+        <br/>
+        <div style="clear: left">
+            <strong>Смотрите также:</strong>
             {%- for tag in see_also %}
                 <a href="#descr-{{ tag.name_en }}" data-toggle="collapse">
-                    <img src="/static/img/description.png" class="icon" /><strong>{{ tag.name }}</strong>
+                    <img src="/static/img/description.png" class="icon"/><strong>{{ tag.name }}</strong>
                 </a>
                 <div id="descr-{{ tag.name_en }}" class="collapse">
                     <br/>
@@ -39,7 +39,8 @@
                     <br/>
                 </div>
             {% endfor -%}
-            </div>
-        {% endif -%}
+        </div>
+        <!-- {{ good.reviews }} -->
+    {% endif -%}
     </div>
 {% endblock %}
