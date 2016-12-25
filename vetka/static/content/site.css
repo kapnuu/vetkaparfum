@@ -359,3 +359,13 @@ hr {
     margin: 0 12px;
     list-style: none;
 }
+
+.reviews {
+    margin: 1em 0 1em 0;
+    font-weight: bolder;
+}
+
+.review-dt {
+    color: #555;
+    font-size: small;
+}

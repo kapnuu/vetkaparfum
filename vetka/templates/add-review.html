@@ -1,0 +1,51 @@
+﻿{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7">
+
+    {%- for e in form.errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ e }}</strong>: {{ form.errors[e] }}
+        </div>
+    {% endfor -%}
+
+        <h3>{% if form.id %}Редактировать отзыв{% else %}Добавить отзыв{% endif %}</h3>
+        <br />
+        <form role="form" action="{% if form.id %}/review/edit/{{ form.id.data }}{% else %}/review/add{% endif %}"
+              method="POST" name="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="vk_id">VK ID:</label>
+                {{ form.vk_id(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                {{ form.name(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Комментарий:</label>
+                {{ form.comment(rows=6, class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                <label for="t_comment">Время комментария:</label>
+                {{ form.t_comment(size=60, maxlength=80, class_='form-control', placeholder='yyyy-MM-dd HH:mm:ss') }}
+            </div>
+
+            <div class="form-group">
+                <label for="vk_link">Ссылка:</label>
+                {{ form.vk_link(size=60, maxlength=80, class_='form-control') }}
+            </div>
+
+            <div class="form-group" style="clear: left;">
+                <label for="goods">Товары:</label>
+                {{ form.goods(class_='li-tags-select') }}
+            </div>
+
+        <button type="submit" class="btn btn-default pull-left" style="clear: left; margin-top: 1em;">{% if form.id %}Редактировать{% else %}Добавить{% endif %}</button>
+        </form>
+    </div>
+{% endblock %}

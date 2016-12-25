@@ -1,0 +1,43 @@
+﻿            <div class="row">
+                {% if review.deleted %}
+                <div class="col-sm-9">
+                    <div class="pull-left">
+                        <a href="https://vk.com/id{{ review.vk_id }}" target="_blank">
+                            <img src="https://vk.com/images/camera_50.png" width="50" height="50"
+                                 class="img-circle review{{ review.vk_id }}-img" />
+                        </a>
+                    </div>
+                {% else %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-7">
+                    <div class="pull-left">
+                        <a href="https://vk.com/id{{ review.vk_id }}" target="_blank">
+                            <img src="/static/img/empty.png" width="50" height="50"
+                                 class="img-circle review{{ review.vk_id }}-img" />
+                        </a>
+                    </div>
+                {% endif %}
+                    <div style="margin-left: 66px;">
+                        <div style="margin-bottom: 4px">
+                            <a href="https://vk.com/id{{ review.vk_id }}" target="_blank"><b
+                                    class="review{{ review.vk_id }}-author">{{ review.vk_first_seen_name }}</b></a><br/>
+                            <a href="{{ review.vk_link }}"
+                                      class="review-dt">{{ review.t_comment|datetime_human }}</a>
+                        </div>
+                        {{ review.comment|safe }}
+
+                        {%- if session['logged_in'] %}
+                            <br /><br />
+                            {%- if review.deleted %}
+                            <a class="btn btn-default" href="/review/restore/{{ review.id }}">Восстановить</a>
+                            {%- else -%}
+                            <a class="btn btn-default" href="/review/edit/{{ review.id }}">Редактировать &raquo;</a>
+                            <a class="btn btn-default" href="/review/delete/{{ review.id }}">Удалить</a>
+                            {% endif -%}
+                        {% endif -%}
+
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+        </div>
+        <br />

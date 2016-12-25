@@ -78,3 +78,21 @@ class EditTagForm(AddTagForm):
         if not AddTagForm.validate(self):
             return False
         return True
+
+
+class AddReviewForm(FlaskForm):
+    vk_id = wtforms.StringField('vk_id', validators=[DataRequired()])
+    name = wtforms.StringField('name', validators=[DataRequired()])
+    t_comment = wtforms.DateTimeField('t_comment', validators=[DataRequired()])
+    vk_link = wtforms.StringField('vk_link', validators=[DataRequired()])
+    comment = wtforms.TextAreaField('comment', validators=[DataRequired()])
+    goods = MultiCheckboxField('goods', coerce=int)
+
+    def __init__(self, *args, **kwargs):
+        FlaskForm.__init__(self, *args, **kwargs)
+
+        self.goods.choices = [(good.id, good.name_en) for good in models.Good.query.all() if not good.deleted]
+
+
+class EditReviewForm(AddReviewForm):
+    id = wtforms.HiddenField('id', validators=[DataRequired()])

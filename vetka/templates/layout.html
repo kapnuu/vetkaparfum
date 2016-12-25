@@ -129,7 +129,6 @@
 
 
 
-
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -153,6 +152,7 @@
                     {%- if session['logged_in'] %}
                     <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="navbar-admin-img img-circle" /></a></li>
                     <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="navbar-admin-img img-circle" /></a></li>
+                    <li><a href="/review/add" style="padding: 8px 12px;"><img src="/static/img/feedback32.png" class="navbar-admin-img img-circle" /></a></li>
                     <li><a href="/tag" style="padding: 8px 12px;"><img src="/static/img/hashtag.png" class="navbar-admin-img img-circle" /></a></li>
                     <li><a href="/grave" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="navbar-admin-img img-circle" /></a></li>
                     {% endif -%}
@@ -180,7 +180,7 @@
                     <p class="lead">Связаться с нами и заказать нашу продукцию можно:<br />
                         <img src="/static/img/vk.png" class="icon" /> через <b><a href="https://vk.com/vetkaparfum" target="_blank">группу</a></b> вконтакте<br />
                         <img src="/static/img/phone.png" class="icon" /> по телефону <b>+7&nbsp;(909)&nbsp;294-00-94</b><br />
-                        <img src="/static/img/email.png" class="icon" /> по электронной почте <b><a href="mailto:ksu.ga@mail.ru">ksu.ga@mail.ru</a></b><br />
+                        <img src="/static/img/email.png" class="icon" /> по электронной почте <b><a href="mailto:vetka@vetkaparfum.ru">vetka@vetkaparfum.ru</a></b><br />
                         <img src="/static/img/feedback.png" class="icon" /> через <b><a href="#" id="feedback">форму</a></b> обратной связи — мы перезвоним!<br />
                     </p>
                     <br /><br />
@@ -205,9 +205,9 @@
                 <div class="col-sm-3">
                     {%- if g.tags %}
                     <div class="cloud">
-                        {% for tag in g.tags[1] %}
+                        {%- for tag in g.tags[1] -%}
                         <span class="cloud-size-{{g.tags[0]}}-{{tag[1]}}{% if tag[0].primary%} cloud-cat{% endif %}"><a href="/{% if tag[0].primary%}category{% else %}tag{% endif %}/{{tag[0].name_en}}">{{tag[0].name|lower}}</a></span>
-                        {% endfor %}
+                        {% endfor -%}
                     </div>
                     {% endif -%}
                     {%- if g.vk_group and request.path=="/" %}
@@ -220,6 +220,23 @@
                     {% endif -%}
                 </div>
             </div>
+            {%- if good %}
+            {%- for review in good.reviews %}
+            <!-- {{ loop.index0 }} -->
+            {%- if not review.deleted %}
+            {%- if loop.first %}
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-7">
+                    <h4 class="reviews">Отзывы</h4>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            {% endif -%}
+            {%- include 'review-view.html' -%}
+            {% endif -%}
+            {% endfor -%}
+            {% endif -%}
         </main>
 
         <footer>
@@ -261,6 +278,26 @@ style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Ме
         $("#image-modal").modal('hide')
       });
     });
+
+    {%- if reviews %}
+    $(document).ready(function() {
+        $.ajax({
+            url: 'https://api.vk.com/api.php?oauth=1&method=users.get&uids={{ reviews }}&fields=photo_50',
+            type: 'GET',
+            dataType: 'jsonp',
+            crossDomain: true,
+            success: function (data) {
+                if (data.response) {
+                    for (var i = 0; i < data.response.length; ++i) {
+                        var resp = data.response[i];
+                        $('.review' + resp.uid + '-img').attr('src', resp.photo_50);
+                        $('.review' + resp.uid + '-author').text(resp.first_name + ' ' + resp.last_name);
+                    }
+                }
+            }
+        });
+    });
+    {% endif -%}
     </script>
         <script>
         function preview_img(elem_id) {

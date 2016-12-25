@@ -50,7 +50,9 @@ class Review(db.Model):
     __tablename__ = 'review'
     id = db.Column(db.Integer, primary_key=True)
     vk_id = db.Column(db.Integer)
+    vk_first_seen_name = db.Column(db.String, default='Anonymous')
     t_comment = db.Column(db.DateTime)
     vk_link = db.Column(db.String)
     comment = db.Column(db.String)
     deleted = db.Column(db.Boolean, default=False)
+    goods = db.relationship('Good', secondary=GoodReview, lazy='dynamic')

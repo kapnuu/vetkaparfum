@@ -19,8 +19,22 @@
         {% set loop1 = loop %}
         {% include 'category-view.html' %}
         {% endfor %}
+        <div style="clear: left">
+            <br /><br />
+        </div>
         {%- else -%}
         <h3>Удалённые теги отсутствуют</h3>
+        {% endif -%}
+
+        {%- if reviews %}
+        <h3>Удалённые отзывы</h3>
+        <br/>
+        {% for review in reviews %}
+        {% set loop1 = loop %}
+            {%- include 'review-view.html' -%}
+        {% endfor %}
+        {%- else -%}
+        <h3>Удалённые отзывы отсутствуют</h3>
         {% endif -%}
     </div>
 {% endblock %}

@@ -16,6 +16,9 @@ from twilio.rest import TwilioRestClient
 
 g_tags = None
 
+g_month = ['ёбанутобря', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября',
+           'октября', 'ноября', 'декабря']
+
 
 def increment_tag_count(cat, tag_list):
     t = tag_list.get(cat)
@@ -34,7 +37,15 @@ def filter_shuffle(seq):
         return seq
 
 
+def filter_datetime_human(dt):
+    try:
+        return '%s %s %s в %s:%s' % (dt.day, g_month[dt.month], dt.year, dt.hour, dt.minute)
+    except:
+        return dt
+
+
 jinja2.filters.FILTERS['shuffle'] = filter_shuffle
+jinja2.filters.FILTERS['datetime_human'] = filter_datetime_human
 
 
 def find_good(good_id, allow_deleted=False):
@@ -238,6 +249,8 @@ def good(good_id):
 
     see_also = [t for t in gg.tags if t.description]
 
+    reviews = ','.join([str(r.vk_id) for r in gg.reviews]) if gg.reviews else None
+
     title = gg.product
     if gg.name:
         title = title + ' "' + gg.name + '"'
@@ -247,7 +260,8 @@ def good(good_id):
         year=datetime.now().year,
         good=gg,
         see_also=see_also,
-        good_page=True
+        good_page=True,
+        reviews=reviews
     )
 
 
@@ -306,12 +320,15 @@ def grave():
 
     tags = models.Category.query.filter(models.Category.deleted).order_by(models.Category.name)
 
+    reviews = models.Review.query.filter(models.Review.deleted).order_by(desc(models.Review.t_comment))
+
     return render_template(
         'deleted.html',
         title='Натуральная косметика',
         year=datetime.now().year,
         goods=goods if goods.first() is not None else None,
-        tags=tags if tags.first() is not None else None
+        tags=tags if tags.first() is not None else None,
+        reviews=reviews if reviews.first() is not None else None
     )
 
 
@@ -540,6 +557,106 @@ def tag_edit(tag_id):
     return render_template('add-tag.html', form=form, good_page=True)
 
 
+@app.route('/review/restore/<review_id>')
+def review_restore(review_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+    rr = models.Review.query.filter(models.Review.id==review_id).first()
+    if rr is None:
+        flash('Review <strong>#' + review_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+
+    global g_tags
+    g_tags = None
+
+    rr.deleted = False
+    db.session.commit()
+
+    flash('Review <b>#' + review_id + '</b> restored. <a href=' +
+          url_for('review_delete', review_id=review_id) + '>Delete?</a>', category='success')
+    return redirect(url_for('home'))
+
+
+@app.route('/review/delete/<review_id>')
+def review_delete(review_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+    rr = models.Review.query.filter(models.Review.id == review_id).first()
+    if rr is None:
+        flash('Review <strong>#' + review_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+
+    global g_tags
+    g_tags = None
+
+    rr.deleted = False
+    db.session.commit()
+
+    flash('Review <b>#' + review_id + '</b> deleted. <a href=' +
+          url_for('review_restore', review_id=review_id) + '>Restore?</a>', category='success')
+    return redirect(url_for('home'))
+
+
+@app.route('/review/add', methods=['GET', 'POST'])
+def review_add():
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    form = forms.AddReviewForm()
+    if form.validate_on_submit():
+        vk_id = form.vk_id.data
+        vk_first_seen_name = form.name.data
+        t_comment = form.t_comment.data
+        vk_link = form.vk_link.data
+        comment = form.comment.data
+        goods = [models.Good.query.filter(models.Good.id == g_id).first() for g_id in form.goods.data]
+
+        new_review = models.Review(vk_id=vk_id, vk_first_seen_name=vk_first_seen_name, t_comment=t_comment,
+                                   vk_link=vk_link, comment=comment, deleted=False, goods=goods)
+
+        db.session.add(new_review)
+        db.session.commit()
+        flash('New review <b>#' + str(new_review.id) + '</b> added.',
+              category='success')
+
+        return redirect(url_for('home'))
+
+    return render_template('add-review.html', form=form, good_page=True)
+
+
+@app.route('/review/edit/<review_id>', methods=['GET', 'POST'])
+def review_edit(review_id):
+    if unauthorized():
+        return redirect(url_for('home'))
+
+    rr = models.Review.query.filter(models.Review.id == review_id).first()
+    if rr is None:
+        flash('Review <strong>' + review_id + '</strong> not found.', category='error')
+        return redirect(url_for('home'))
+
+    form = forms.EditReviewForm()
+    if form.validate_on_submit():
+        rr.vk_id = form.vk_id.data
+        rr.vk_first_seen_name = form.name.data
+        rr.t_comment = form.t_comment.data
+        rr.vk_link = form.vk_link.data
+        rr.comment = form.comment.data
+        rr.goods = [models.Good.query.filter(models.Good.id == g_id).first() for g_id in form.goods.data]
+
+        db.session.commit()
+        flash('Tag <b>#' + str(rr.id) + '</b> updated.', category='success')
+        return redirect(url_for('home'))
+
+    form.id.data = rr.id
+    form.vk_id.data = rr.vk_id
+    form.name.data = rr.vk_first_seen_name
+    form.t_comment.data = rr.t_comment
+    form.vk_link.data = rr.vk_link
+    form.comment.data = rr.comment
+    form.goods.data = [g.id for g in rr.goods]
+
+    return render_template('add-review.html', form=form, good_page=True)
+
 @app.route('/fix/<fix_id>')
 def fix(fix_id):
     if unauthorized():
@@ -561,3 +678,4 @@ def fix(fix_id):
         flash('Fix <strong>' + fix_id + '</strong> not found.', category='error')
 
     return redirect(url_for('home'))
+
