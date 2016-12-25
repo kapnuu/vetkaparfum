@@ -653,9 +653,10 @@ def review_edit(review_id):
     form.t_comment.data = rr.t_comment
     form.vk_link.data = rr.vk_link
     form.comment.data = rr.comment
-    form.goods.data = [g.id for g in rr.goods]
+    form.goods.data = [gg.id for gg in rr.goods]
 
     return render_template('add-review.html', form=form, good_page=True)
+
 
 @app.route('/fix/<fix_id>')
 def fix(fix_id):
