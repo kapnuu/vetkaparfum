@@ -39,7 +39,7 @@ def filter_shuffle(seq):
 
 def filter_datetime_human(dt):
     try:
-        return '%s %s %s в %s:%s' % (dt.day, g_month[dt.month], dt.year, dt.hour, dt.minute)
+        return '%s %s %s в %02d:%02d' % (dt.day, g_month[dt.month], dt.year, dt.hour, dt.minute)
     except:
         return dt
 
