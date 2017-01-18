@@ -16,3 +16,4 @@ psycopg2==2.5
 flask_wtf==0.13
 sendgrid>=3.6
 twilio>=5.6
+pytest=>3
