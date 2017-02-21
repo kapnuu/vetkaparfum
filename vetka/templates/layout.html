@@ -23,6 +23,12 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://{{ request.host }}{{ request.path }}" />
     <meta property="og:image" content="http://{{ request.host }}/static/img/logo.png" />
+    {%- if good_page and good and good.description %}
+    <meta property="og:description" content="{{ good.description }}">
+    {% endif -%}
+    {%- if request.path=='/' %}
+    <meta property="og:description" content="Это линия домашней косметики ручной работы, изготовленной из натуральных ингредиентов. В состав продуктов входят исключительно природные компоненты: пчелиный воск, твёрдые баттеры, экстракты растений, косметические глины и эфирные масла.">
+    {% endif -%}
 </head>
 <body>
 {%- if g.yandexCounter %}<!-- Yandex.Metrika counter -->
