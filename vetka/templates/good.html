@@ -2,10 +2,10 @@
 {% block content %}
     <div class="col-sm-4">
         <a href="#" class="thumbnail">
-            <img src="{{ good.image }}" class="img-rounded thumbnail" itemprop="image" />
+            <img src="{{ good.image }}" class="img-rounded thumbnail" />
         </a>
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-5" itemscope itemtype="http://schema.org/Product">
         <h3 itemprop="name">{{good.product}}
             {%- if good.name %} <nobr>&laquo;{{ good.name }}&raquo;</nobr>{% endif -%}
             {%- if good.deleted %} (удалено){% endif -%}
