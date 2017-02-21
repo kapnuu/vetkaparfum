@@ -2,8 +2,19 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if title %}{{ title }} - {% endif %}Ветка</title>
+    {%- if good_page %}
+    <meta name="description" content="{{ good.product }} {% if good.name %}{{ good.name }}. {% endif -%}
+            {%- if good.description %}{{ good.description }}{% endif -%}">
+    {% endif -%}
+    {%- if request.path=='/' %}
+    <meta name="description" content="Это линия домашней косметики ручной работы, изготовленной из натуральных ингредиентов. В состав продуктов входят исключительно природные компоненты: пчелиный воск, твёрдые баттеры, экстракты растений, косметические глины и эфирные масла.">
+    {% endif -%}
+    <meta name="keywords" content="
+        {%- if good_page %}{{ good.product|lower }}, {% if good.name %}{{ good.name|lower }}, {% endif -%}{% endif -%}
+        {%- if category %}{{ category.name|lower }}, {% endif -%}
+        натуральная косметика, домашняя косметика, твёрдые духи, бальзам для ног, масло для кутикулы, скраб для тела, гейзер для педикюра, сухой шампунь, бомбочки для ванны, масло для бровей и ресниц, массажная плитка">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
     <link rel="image_src" href="http://{{ request.host }}/static/img/logo.png" />
