@@ -663,6 +663,12 @@ def review_edit(review_id):
     return render_template('add-review.html', form=form, good_page=True)
 
 
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(path.join(app.root_path, 'static'),
+                               'sitemap.xml', mimetype='text/xml')
+
+
 @app.route('/fix/<fix_id>')
 def fix(fix_id):
     if unauthorized():
