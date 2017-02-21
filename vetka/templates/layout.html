@@ -88,8 +88,7 @@
         </div>
     </div>{% endif %}
 
-
-
+    {%- if not is_error -%}
     <div class="modal fade" id="feedback-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
@@ -126,8 +125,7 @@
             </div>
         </div>
     </div>
-
-
+    {%- endif -%}
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -170,6 +168,7 @@
                 <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
                     <h2>Натуральная домашняя косметика</h2>
                     <h1>&laquo;Ветка&raquo;</h1>
+                    {%- if not is_error -%}
                     <p class="lead">Это линия домашней косметики ручной работы, изготовленной из натуральных
                         ингредиентов. В состав продуктов входят исключительно природные компоненты: пчелиный воск,
                         твёрдые баттеры, экстракты растений, косметические глины и эфирные масла.</p>
@@ -184,6 +183,7 @@
                         <img src="/static/img/feedback.png" class="icon" /> через <b><a href="#" id="feedback">форму</a></b> обратной связи — мы перезвоним!<br />
                     </p>
                     <br /><br />
+                    {%- endif -%}
                 </div>
             </div>
         </header>
