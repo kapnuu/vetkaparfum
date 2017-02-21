@@ -1,6 +1,8 @@
 User-agent: *
+Disallow: /login
 Sitemap: http://vetkaparfum.ru/sitemap.xml
 
 User-agent: Yandex
+Disallow: /login
 Host: vetkaparfum.ru
 Sitemap: http://vetkaparfum.ru/sitemap.xml
