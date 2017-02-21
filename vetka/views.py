@@ -675,6 +675,12 @@ def robots():
                                'robots.txt', mimetype='text/plain')
 
 
+@app.route('/google46a636bc8045167a.html')
+def google_verification():
+    return send_from_directory(path.join(app.root_path, 'static'),
+                               'google46a636bc8045167a.html', mimetype='text/html')
+
+
 @app.route('/fix/<fix_id>')
 def fix(fix_id):
     if unauthorized():
