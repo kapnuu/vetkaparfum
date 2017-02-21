@@ -8,6 +8,7 @@
     <div class="col-sm-5" itemscope itemtype="http://schema.org/Product">
         <link itemprop="url" href="http://{{ request.host }}{{ request.path }}" />
         <link itemprop="image" href="http://{{ request.host }}/static/img/logo.png" />
+        <link itemprop="logo" href="http://{{ request.host }}/static/img/logo.png" />
         <h3 itemprop="name">{{good.product}}
             {%- if good.name %} <nobr>&laquo;{{ good.name }}&raquo;</nobr>{% endif -%}
             {%- if good.deleted %} (удалено){% endif -%}
