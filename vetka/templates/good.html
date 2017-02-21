@@ -15,7 +15,7 @@
         <br />
         <h4>{{ good.price }}&nbsp;<span class="rub">руб.</span></h4>
         <br />
-        <h4><a href="/tag/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}{% if tag.deleted==False %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endif %}{% endfor %}{% endif %}</h4>
+        <h4><a href="/category/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}{% if tag.deleted==False %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endif %}{% endfor %}{% endif %}</h4>
         {% if session['logged_in'] %}
             <br />
             {%- if good.deleted %}
