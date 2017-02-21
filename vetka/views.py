@@ -82,6 +82,11 @@ def find_tag_not_cat(tag_id, allow_deleted=False):
     return tt
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', title='Не найдено :(', year=datetime.now().year, is_error=True), 404
+
+
 @app.route('/favicon.ico')
 def favicon_ico():
     return send_from_directory(path.join(app.root_path, 'static'),
