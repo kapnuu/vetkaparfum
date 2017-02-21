@@ -1,0 +1,6 @@
+User-agent: *
+Sitemap: http://vetkaparfum.ru/sitemap.xml
+
+User-agent: Yandex
+Host: vetkaparfum.ru
+Sitemap: http://vetkaparfum.ru/sitemap.xml

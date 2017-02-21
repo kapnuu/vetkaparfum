@@ -669,6 +669,12 @@ def sitemap():
                                'sitemap.xml', mimetype='text/xml')
 
 
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(path.join(app.root_path, 'static'),
+                               'robots.txt', mimetype='text/plain')
+
+
 @app.route('/fix/<fix_id>')
 def fix(fix_id):
     if unauthorized():
