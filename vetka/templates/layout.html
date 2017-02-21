@@ -159,11 +159,11 @@
                     <li><a href="/category/parfum">Духи</a></li>
                     <li><a href="/category/nails">Ногти</a></li>
                     {%- if session['logged_in'] %}
-                    <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="navbar-admin-img img-circle" /></a></li>
-                    <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="navbar-admin-img img-circle" /></a></li>
-                    <li><a href="/review/add" style="padding: 8px 12px;"><img src="/static/img/feedback32.png" class="navbar-admin-img img-circle" /></a></li>
-                    <li><a href="/tag" style="padding: 8px 12px;"><img src="/static/img/hashtag.png" class="navbar-admin-img img-circle" /></a></li>
-                    <li><a href="/grave" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="navbar-admin-img img-circle" /></a></li>
+                    <li><a href="/logout" style="padding: 8px 12px;"><img src="/static/img/logout.png" class="navbar-admin-img img-circle" alt="Выйти" title="Выйти" /></a></li>
+                    <li><a href="/good/add" style="padding: 8px 12px;"><img src="/static/img/add.png" class="navbar-admin-img img-circle" alt="Товар" title="Добавить товар" /></a></li>
+                    <li><a href="/review/add" style="padding: 8px 12px;"><img src="/static/img/feedback32.png" class="navbar-admin-img img-circle" alt="Отзыв" title="Добавить отзыв" /></a></li>
+                    <li><a href="/tag" style="padding: 8px 12px;"><img src="/static/img/hashtag.png" class="navbar-admin-img img-circle" alt="Теги" title="Редактировать теги" /></a></li>
+                    <li><a href="/grave" style="padding: 8px 12px;"><img src="/static/img/grave.png" class="navbar-admin-img img-circle" alt="Удалено" title="Удалённые товары/теги/отзывы" /></a></li>
                     {% endif -%}
                 </ul>
             </div>
