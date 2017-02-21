@@ -6,6 +6,7 @@
         </a>
     </div>
     <div class="col-sm-5" itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="url" content="http://{{ request.host }}{{ request.path }}">
         <h3 itemprop="name">{{good.product}}
             {%- if good.name %} <nobr>&laquo;{{ good.name }}&raquo;</nobr>{% endif -%}
             {%- if good.deleted %} (удалено){% endif -%}
