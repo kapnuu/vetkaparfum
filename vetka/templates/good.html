@@ -5,17 +5,17 @@
             <img src="{{ good.image }}" class="img-rounded thumbnail" />
         </a>
     </div>
-    <div class="col-sm-5">
-        <h3>{{good.product}}
+    <div class="col-sm-5" itemscope itemtype="http://schema.org/Product">
+        <h3 itemprop="name">{{good.product}}
             {%- if good.name %} <nobr>&laquo;{{ good.name }}&raquo;</nobr>{% endif -%}
             {%- if good.deleted %} (удалено){% endif -%}
         </h3>
         <br />
-        <p><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
+        <p itemprop="description"><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
         <br />
-        <h4>{{ good.price }}&nbsp;<span class="rub">руб.</span></h4>
+        <h4><span itemprop="price">{{ good.price }}</span>>&nbsp;<span class="rub" itemprop="priceCurrency">руб.</span></h4>
         <br />
-        <h4><a href="/category/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}{% if tag.deleted==False %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endif %}{% endfor %}{% endif %}</h4>
+        <h4 itemprop="offers" itemscope itemtype="http://schema.org/Offer"><a href="/category/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}{% if tag.deleted==False %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endif %}{% endfor %}{% endif %}</h4>
         {% if session['logged_in'] %}
             <br />
             {%- if good.deleted %}
