@@ -46,7 +46,24 @@
                 </div>
             {% endfor -%}
         </div>
-    {% endif -%}
-
+    {% endif %}
+            <script type="application/ld+json">
+            {
+              "@context": "http://schema.org/",
+              "@type": "Product",
+              "name": "{{good.product}}{%- if good.name %} &laquo;{{ good.name }}&raquo;{% endif -%}",
+              "image": "{{ good.image }}",
+              "description": "{% if good.description %}{{ good.description }}{% endif %}",
+              "brand": {
+                "@type": "Thing",
+                "name": "Ветка"
+              },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "RUB",
+                "price": "{{ good.price }}"
+              }
+            }
+            </script>
     </div>
 {% endblock %}
