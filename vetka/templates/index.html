@@ -6,24 +6,25 @@
         {% set loop1 = loop %}
         {% include 'good-view.html' %}
         {% endfor %}
-<script type="application/ld+json">
+<script type='application/ld+json'> 
 {
-  "@context": "http://schema.org",
+  "@context": "http://www.schema.org",
   "@type": "Organization",
-  "contactPoint": [{
+  "name": "Ветка",
+  "url": "http://vetkaparfum.ru/",
+  "logo": "http://vetkaparfum.ru/static/img/logo.png",
+  "description": "Натуральная домашняя косметика Ветка",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Нижний Новгород",
+    "addressCountry": "Россия"
+  },
+  "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "+7(909)294-00-94",
     "contactType": "sales"
-  }, {
-    "@type": "ContactPoint",
-    "email": "vetka@vetkaparfum.ru",
-    "contactType": "sales"
-  }, {
-    "@type": "ContactPoint",
-    "url": "http://www.vetkaparfum.ru",
-    "contactType": "sales"
-  }]
+  }
 }
-</script>
+ </script>
     </div>
 {% endblock %}
