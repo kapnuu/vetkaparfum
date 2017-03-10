@@ -279,6 +279,9 @@ def category(tag_id):
         flash('Category <strong>' + tag_id + '</strong> not found.', category='error')
         return redirect(url_for('home'))
 
+    if cat.primary and request.path.startswith('/tag/'):
+        return redirect(url_for('category', tag_id=tag_id), 301)
+
     goods = list(models.Good.query.filter(and_(cat.id == models.Good.category_id, models.Good.deleted == False)))
     if cat.goods2:
         goods.extend([x for x in cat.goods2 if not x.deleted])
