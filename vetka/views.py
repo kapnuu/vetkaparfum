@@ -16,6 +16,11 @@ from twilio.rest import TwilioRestClient
 g_tags = None
 
 
+def clear_tags():
+    global g_tags
+    g_tags = None
+
+
 def increment_tag_count(cat, tag_list):
     t = tag_list.get(cat)
     if t is None:
@@ -56,6 +61,12 @@ def find_tag_not_cat(tag_id, allow_deleted=False):
     if tt is not None and tt.deleted and not allow_deleted:
         tt = None
     return tt
+
+
+def unauthorized():
+    if not session.get('logged_in'):
+        flash('You must be authorized for this action.', category='error')
+        return True
 
 
 @app.errorhandler(404)
@@ -101,8 +112,7 @@ def home2():
 
 @app.route('/')
 def home():
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     goods = models.Good.query.filter(models.Good.deleted == False).order_by(desc(models.Good.priority))
 
@@ -289,12 +299,6 @@ def tag_list():
     )
 
 
-def unauthorized():
-    if not session.get('logged_in'):
-        flash('You must be authorized for this action.', category='error')
-        return True
-
-
 @app.route('/grave')
 def grave():
     if unauthorized():
@@ -330,8 +334,7 @@ def good_restore(good_id):
               '</a> not deleted. Nothing to restore.', category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     gg.deleted = False
     db.session.commit()
@@ -355,8 +358,7 @@ def good_delete(good_id):
               category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     gg.deleted = True
     db.session.commit()
@@ -385,8 +387,7 @@ def good_add():
         new_good = models.Good(product=product, name=name, name_en=name_en, description=description, image=image,
                                category=cat, price=price, priority=priority, tags=tags)
 
-        global g_tags
-        g_tags = None
+        clear_tags()
 
         db.session.add(new_good)
         db.session.commit()
@@ -454,8 +455,7 @@ def tag_delete(tag_id):
               category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     tt.deleted = True
     db.session.commit()
@@ -478,8 +478,7 @@ def tag_restore(tag_id):
               '</a> not deleted. Nothing to restore.', category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     tt.deleted = False
     db.session.commit()
@@ -550,8 +549,7 @@ def review_restore(review_id):
         flash('Review <strong>#' + review_id + '</strong> not found.', category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     rr.deleted = False
     db.session.commit()
@@ -570,8 +568,7 @@ def review_delete(review_id):
         flash('Review <strong>#' + review_id + '</strong> not found.', category='error')
         return redirect(url_for('home'))
 
-    global g_tags
-    g_tags = None
+    clear_tags()
 
     rr.deleted = False
     db.session.commit()
@@ -667,8 +664,7 @@ def fix(fix_id):
 
     success = False
     if fix_id == 'cat-primary':
-        global g_tags
-        g_tags = None
+        clear_tags()
 
         for cat in models.Category.query.all():
             cat.primary = cat.name_en in ['face', 'body', 'hair', 'parfum', 'nails']
