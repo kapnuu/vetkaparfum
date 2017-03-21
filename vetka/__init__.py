@@ -11,4 +11,4 @@ if settings is None:
     settings = 'DevelopConfig'
 app.config.from_object('config.' + settings)
 
-from vetka import views, models, x_create_db
+from vetka import views, models, x_create_db, filters

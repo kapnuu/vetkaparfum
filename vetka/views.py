@@ -5,7 +5,6 @@ from vetka import app, models, db, tagcloud, security, forms
 from sqlalchemy import and_, or_, desc
 import random
 import string
-import jinja2
 import os
 from os import path, environ
 import re
@@ -16,9 +15,6 @@ from twilio.rest import TwilioRestClient
 
 g_tags = None
 
-g_month = ['ёбанутобря', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября',
-           'октября', 'ноября', 'декабря']
-
 
 def increment_tag_count(cat, tag_list):
     t = tag_list.get(cat)
@@ -26,26 +22,6 @@ def increment_tag_count(cat, tag_list):
         tag_list[cat] = 1
     else:
         tag_list[cat] += 1
-
-
-def filter_shuffle(seq):
-    try:
-        result = list(seq)
-        random.shuffle(result)
-        return result
-    except:
-        return seq
-
-
-def filter_datetime_human(dt):
-    try:
-        return '%s %s %s в %02d:%02d' % (dt.day, g_month[dt.month], dt.year, dt.hour, dt.minute)
-    except:
-        return dt
-
-
-jinja2.filters.FILTERS['shuffle'] = filter_shuffle
-jinja2.filters.FILTERS['datetime_human'] = filter_datetime_human
 
 
 def find_good(good_id, allow_deleted=False):
