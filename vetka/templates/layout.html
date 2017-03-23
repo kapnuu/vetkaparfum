@@ -110,13 +110,11 @@
                              id="login-logo" class="img-responsive"/>
                         <div class="control-group inner-addon left-addon">
                             <i class="glyphicon glyphicon-user"></i>
-                            <input type="text" class="login-field" value="" placeholder="username"
-                                   name="username" required>
+                            <input type="text" class="login-field" value="" placeholder="username" name="username" required>
                         </div>
                         <div class="control-group inner-addon left-addon">
                             <i class="glyphicon glyphicon-lock"></i>
-                            <input type="password" class="login-field" value="" placeholder="password"
-                                   name="password">
+                            <input type="password" class="login-field" value="" placeholder="password" name="password">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -139,7 +137,6 @@
                 </div>
                 <form action="/feedback" method="POST">
                     <div class="modal-body">
-
                         <div class="form-group">
                             <label for="feedback-name">Как к вам обращаться?</label>
                             <input type="text" id="feedback-name" name="feedback-name" placeholder="Ваше имя" class="form-control" />
@@ -215,7 +212,7 @@
                     </p>
                     <p class="lead">Связаться с нами и заказать нашу продукцию можно:<br />
                         <img src="/static/img/vk.png" class="icon" alt="VK" /> через <b><a href="https://vk.com/vetkaparfum" target="_blank">группу</a></b> вконтакте<br />
-                        <img src="/static/img/phone.png" class="icon" alt="phone" /> по телефону <b>+7&nbsp;(909)&nbsp;294-00-94</b><br />
+                        <img src="/static/img/phone.png" class="icon" alt="phone" /> по телефону <b><a href="callto:+79092940094">+7&nbsp;(909)&nbsp;294-00-94</a></b><br />
                         <img src="/static/img/email.png" class="icon"  alt="email" /> по электронной почте <b><a href="mailto:vetka@vetkaparfum.ru">vetka@vetkaparfum.ru</a></b><br />
                         <img src="/static/img/feedback.png" class="icon" alt="feedback" /> через <b><a href="#" id="feedback">форму</a></b> обратной связи — мы перезвоним!<br />
                     </p>
@@ -228,15 +225,14 @@
         <main>
             {%- with messages = get_flashed_messages(with_categories=true) -%}
             {%- if messages -%}
-            {% for category, message in messages %}
+            {%- for category, message in messages %}
             <div class="alert alert-{{category}}">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{ message|safe }}
             </div>
-            {% endfor %}
+            {% endfor -%}
             {%- endif -%}
             {%- endwith -%}
-
             <div class="row">
                 {% block content %}{% endblock %}
                 <div class="col-sm-3">
@@ -259,7 +255,6 @@
             </div>
             {%- if good %}
             {%- for review in good.reviews %}
-            <!-- {{ loop.index0 }} -->
             {%- if not review.deleted %}
             {%- if loop.first %}
             <div class="row">
@@ -315,7 +310,6 @@ style="width:88px; height:31px; border:0; margin: 0 1em;" alt="Яндекс.Ме
         $("#image-modal").modal('hide')
       });
     });
-
     {%- if reviews %}
     $(document).ready(function() {
         $.ajax({

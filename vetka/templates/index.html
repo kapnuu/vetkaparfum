@@ -2,9 +2,8 @@
 {% block content %}
     <div class="col-sm-2"></div>
     <div class="col-sm-7">
-        {% for good in goods %}
-        {% set loop1 = loop %}
+        {%- for good in goods %}{% set loop1 = loop %}
         {% include 'good-view.html' %}
-        {% endfor %}
+        {% endfor -%}
     </div>
 {% endblock %}
