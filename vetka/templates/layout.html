@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>{% if title %}{{ title }} - {% endif %}Ветка</title>
     {%- if good_page and good %}
     <meta name="description" content="{{ good.product }} {% if good.name %}{{ good.name }}. {% endif -%}
@@ -19,10 +19,10 @@
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
     <link rel="image_src" href="http://{{ request.host }}/static/img/logo.png" />
     <script src="/static/scripts/modernizr-2.6.2.js"></script>
-    <meta property="og:title" content="{% if title %}{{ title }} - {% endif %}Ветка" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://{{ request.host }}{{ request.path }}" />
-    <meta property="og:image" content="http://{{ request.host }}/static/img/logo.png" />
+    <meta property="og:title" content="{% if title %}{{ title }} - {% endif %}Ветка">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://{{ request.host }}{{ request.path }}">
+    <meta property="og:image" content="http://{{ request.host }}/static/img/logo.png">
     {%- if good_page and good and good.description %}
     <meta property="og:description" content="{{ good.description }}">
     {% endif -%}
@@ -118,7 +118,6 @@
                             <input type="password" class="login-field" value="" placeholder="password"
                                    name="password">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <input type="submit" value="Войти" class="btn btn-default btn-large">
@@ -138,7 +137,6 @@
                             aria-hidden="true">×</span></button>
                     <div class="modal-title">Обратная связь</div>
                 </div>
-
                 <form action="/feedback" method="POST">
                     <div class="modal-body">
 
@@ -146,13 +144,11 @@
                             <label for="feedback-name">Как к вам обращаться?</label>
                             <input type="text" id="feedback-name" name="feedback-name" placeholder="Ваше имя" class="form-control" />
                         </div>
-
                         <div class="form-group">
                             <label for="feedback-phone">Ваш номер телефона: <a title="Обязательное поле"><strong>*</strong></a></label>
                             <input type="text" class="input-medium bfh-phone form-control" data-format="+7 (ddd) ddd-dd-dd"
                                    id="feedback-phone" name="feedback-phone" required>
                         </div>
-
                         <div class="form-group">
                             <label for="feedback-comment">Комментарий:</label>
                             <textarea type="text" id="feedback-comment" name="feedback-comment" class="form-control" rows="4"></textarea>
@@ -218,10 +214,10 @@
                         Каждая баночка нашей косметики уникальна, ведь она сделана вручную и с любовью.
                     </p>
                     <p class="lead">Связаться с нами и заказать нашу продукцию можно:<br />
-                        <img src="/static/img/vk.png" class="icon" /> через <b><a href="https://vk.com/vetkaparfum" target="_blank">группу</a></b> вконтакте<br />
-                        <img src="/static/img/phone.png" class="icon" /> по телефону <b>+7&nbsp;(909)&nbsp;294-00-94</b><br />
-                        <img src="/static/img/email.png" class="icon" /> по электронной почте <b><a href="mailto:vetka@vetkaparfum.ru">vetka@vetkaparfum.ru</a></b><br />
-                        <img src="/static/img/feedback.png" class="icon" /> через <b><a href="#" id="feedback">форму</a></b> обратной связи — мы перезвоним!<br />
+                        <img src="/static/img/vk.png" class="icon" alt="VK" /> через <b><a href="https://vk.com/vetkaparfum" target="_blank">группу</a></b> вконтакте<br />
+                        <img src="/static/img/phone.png" class="icon" alt="phone" /> по телефону <b>+7&nbsp;(909)&nbsp;294-00-94</b><br />
+                        <img src="/static/img/email.png" class="icon"  alt="email" /> по электронной почте <b><a href="mailto:vetka@vetkaparfum.ru">vetka@vetkaparfum.ru</a></b><br />
+                        <img src="/static/img/feedback.png" class="icon" alt="feedback" /> через <b><a href="#" id="feedback">форму</a></b> обратной связи — мы перезвоним!<br />
                     </p>
                     <br /><br />
                     {%- endif -%}
