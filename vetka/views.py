@@ -554,7 +554,7 @@ def review_restore(review_id):
     rr.deleted = False
     db.session.commit()
 
-    flash('Review <b>#' + review_id + '</b> restored. <a href=' +
+    flash('Review <strong>#' + review_id + '</strong> restored. <a href=' +
           url_for('review_delete', review_id=review_id) + '>Delete?</a>', category='success')
     return redirect(url_for('home'))
 
@@ -573,7 +573,7 @@ def review_delete(review_id):
     rr.deleted = False
     db.session.commit()
 
-    flash('Review <b>#' + review_id + '</b> deleted. <a href=' +
+    flash('Review <strong>#' + review_id + '</strong> deleted. <a href=' +
           url_for('review_restore', review_id=review_id) + '>Restore?</a>', category='success')
     return redirect(url_for('home'))
 
@@ -597,7 +597,7 @@ def review_add():
 
         db.session.add(new_review)
         db.session.commit()
-        flash('New review <b>#' + str(new_review.id) + '</b> added.',
+        flash('New review <strong>#' + str(new_review.id) + '</strong> added.',
               category='success')
 
         return redirect(url_for('home'))
@@ -625,7 +625,7 @@ def review_edit(review_id):
         rr.goods = [models.Good.query.filter(models.Good.id == g_id).first() for g_id in form.goods.data]
 
         db.session.commit()
-        flash('Tag <b>#' + str(rr.id) + '</b> updated.', category='success')
+        flash('Tag <strong>#' + str(rr.id) + '</strong> updated.', category='success')
         return redirect(url_for('home'))
 
     form.id.data = rr.id

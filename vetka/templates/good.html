@@ -16,10 +16,10 @@
         <br />
         <p itemprop="description"><big>{% if good.description %}{{ good.description }}{% endif %}</big></p>
         <br />
-        <h4 itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <span itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="h4">
             <span itemprop="price">{{ good.price }}</span>&nbsp;<span class="rub">руб.</span>
             <meta itemprop="priceCurrency" content="RUB">
-        </h4>
+        </span>
         <br />
         <h4><a href="/category/{{good.category.name_en}}">#{{good.category.name|lower}}</a>{% if good.tags %} {% for tag in good.tags|shuffle %}{% if tag.deleted==False %}<a href="/tag/{{tag.name_en}}">#{{tag.name}}</a> {% endif %}{% endfor %}{% endif %}</h4>
         {% if session['logged_in'] %}
