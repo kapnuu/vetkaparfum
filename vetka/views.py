@@ -197,6 +197,11 @@ def feedback():
     return redirect(url_for('home'))
 
 
+@app.route('/login', methods=['GET'])
+def login1():
+    return redirect(url_for('home'))
+
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
