@@ -10,7 +10,8 @@ from os import path, environ
 import re
 import sendgrid
 from sendgrid.helpers.mail import *
-from twilio.rest import TwilioRestClient
+#from twilio.rest import TwilioRestClient
+from twilio.rest import Client
 
 
 g_tags = None
@@ -180,7 +181,8 @@ def feedback():
                         sms = '%s + comment' % sms
 
                     try:
-                        client = TwilioRestClient(account_sid, auth_token)
+                        #client = TwilioRestClient(account_sid, auth_token)
+                        client = Client(account_sid, auth_token)
                         client.messages.create(from_=src_phone, to=dst_phone, body=sms)
                         sent = True
                         print('sent: %s' % sms)
