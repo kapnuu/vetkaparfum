@@ -685,3 +685,11 @@ def fix(fix_id):
 
     return redirect(url_for('home'))
 
+@app.route('/yandex_8bca23bcea368b05.html')
+def hello_yandex():
+    return '''<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Verification: 8bca23bcea368b05</body>
+</html>'''
