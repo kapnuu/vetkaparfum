@@ -13,6 +13,8 @@ class Config:
     if database_uri is None:
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     else:
+        if database_uri.startswith('postgres://'):
+            database_uri = f'postgresql://{database_uri[11:]}'
         SQLALCHEMY_DATABASE_URI = database_uri
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
