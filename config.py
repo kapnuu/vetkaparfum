@@ -16,6 +16,8 @@ class Config:
         print('using sqlite database')
     else:
         print('using postgres database')
+        if database_uri.startswith('postgres://'):
+            database_uri = f'postgresql://{database_uri[11:]}'
         SQLALCHEMY_DATABASE_URI = database_uri
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
