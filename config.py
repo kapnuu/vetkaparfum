@@ -9,10 +9,13 @@ class Config:
     CSRF_ENABLED = True
     SECRET_KEY = os.urandom(16)
 
-    database_uri = os.environ.get('DATABASE_URL')
+    database_uri = os.environ.get('CRUNCHY_DATABASE_URL')
+    # database_uri = os.environ.get('DATABASE_URL')
     if database_uri is None:
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+        print('using sqlite database')
     else:
+        print('using postgres database')
         SQLALCHEMY_DATABASE_URI = database_uri
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
