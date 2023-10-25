@@ -11,7 +11,7 @@ SQLAlchemy==1.4.44
 sqlalchemy-migrate==0.13.0
 sqlparse==0.4.4
 Tempita==0.5.2
-Werkzeug==2.2.3
+Werkzeug==3.0.1
 psycopg2==2.9.5
 flask_wtf==1.0.1
 sendgrid>=3.6
